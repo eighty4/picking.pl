@@ -1,0 +1,72 @@
+name: Deploy
+run-name: Deploy ${{ inputs.release_version || inputs.git_sha }} to ${{ inputs.cloudflare_env }}
+
+concurrency: deploy-${{ inputs.cloudflare_env }}
+
+on:
+  workflow_call:
+    inputs:
+      cloudflare_env:
+        description: Branch name for deploy to Cloudflare Pages
+        type: string
+        required: true
+      dev_build:
+        description: Deploying dev build artifact
+        type: boolean
+        required: false
+      release_version:
+        description: Release tag / version in GitHub Releases
+        type: string
+        required: false
+  workflow_dispatch:
+    inputs:
+      cloudflare_env:
+        description: Branch name for deploy to Cloudflare Pages
+        type: choice
+        options:
+          - stage
+          - production
+        default: stage
+        required: true
+      release_version:
+        description: Release tag / version in GitHub Releases
+        type: string
+        required: true
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ inputs.cloudflare_env }}
+      url: ${{ inputs.cloudflare_env == 'production' && 'https://picking-playmate.pages.dev' || format('https://{0}.picking-playmate.pages.dev', inputs.cloudflare_env) }}
+    steps:
+      - if: ${{ inputs.dev_build && inputs.release_version }}
+        name: check inputs
+        run: exit 1
+      - if: ${{ inputs.dev_build }}
+        uses: actions/download-artifact@v4
+        with:
+          name: www.zip
+      - if: ${{ inputs.release_version }}
+        name: curl www.zip
+        run: |
+          RELEASE_URL="https://api.github.com/repos/eighty4/install.sh/releases/tags/$${{ inputs.release_version }}"
+          ASSET_URL=$(curl -s "$RELEASE_URL" | jq -r '.assets[] | select(.name == "www.zip") | .url')
+          curl -H "Accept: application/octet-stream" -Ls $ASSET_URL > www.zip
+      - run: unzip www.zip -d www
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: cloudflare/wrangler-action@v3
+        name: wrangler pages deploy
+        with:
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          command: pages deploy www --project-name picking-playmate --branch "${{ inputs.cloudflare_env }}"
+          gitHubToken: ${{ github.token }}
+          wranglerVersion: latest

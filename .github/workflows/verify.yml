@@ -1,18 +1,10 @@
 name: Verify
+run-name: "Verify ${{ github.sha }} (${{ github.ref_name }})"
 
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - .github/workflows/verify.yml
-      - assets/**
-      - lib/**
-      - test/**
-      - web/**
-      - analysis_options.yaml
-      - pubspec.*
   pull_request:
-    branches: [ main ]
+    branches: [ '*' ]
+  workflow_call:
 
 env:
   flutter_version: 3.27.1
@@ -23,10 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - analyze
+      - build
       - format
       - test
     steps:
-      - run: echo ""
+      - run: echo "And up through the ground come a green passing build"
 
   analyze:
     runs-on: ubuntu-latest
@@ -45,6 +38,29 @@ jobs:
       - name: analyze
         run: flutter analyze
         working-directory: pp
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: pp
+      - uses: actions/checkout@v4
+        with:
+          repository: eighty4/libtab
+          path: libtab
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.flutter_version }}
+          channel: 'stable'
+      - name: build web
+        run: flutter build web
+        working-directory: pp
+      - run: (cd pp/build/web && zip -qr ../../../www.zip .)
+      - uses: actions/upload-artifact@v4
+        with:
+          name: www.zip
+          path: www.zip
 
   format:
     runs-on: ubuntu-latest
@@ -80,22 +96,4 @@ jobs:
           channel: 'stable'
       - name: test
         run: flutter test
-        working-directory: pp
-
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          path: pp
-      - uses: actions/checkout@v4
-        with:
-          repository: eighty4/libtab
-          path: libtab
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: ${{ env.flutter_version }}
-          channel: 'stable'
-      - name: build web
-        run: flutter build web
         working-directory: pp
