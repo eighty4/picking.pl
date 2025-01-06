@@ -23,8 +23,8 @@ class _PickingPlayerState extends State<PickingPlayer> {
 
   Size measureSize(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-    final width = min(800.0, size.width * .75);
-    final height = width / 2;
+    final width = min(1100.0, size.width * .8);
+    final height = min(550.0, (size.height - 200) * .7);
     return Size(width, height);
   }
 }
