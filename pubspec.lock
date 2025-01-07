@@ -129,7 +129,7 @@ packages:
       path: "../libtab"
       relative: true
     source: path
-    version: "0.0.11"
+    version: "0.0.12"
   lints:
     dependency: transitive
     description:
