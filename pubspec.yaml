@@ -20,6 +20,12 @@ dev_dependencies:
 
 flutter:
   assets:
+    - assets/icons/chevron_left.svg
+    - assets/icons/chevron_right.svg
+    - assets/icons/cog.svg
+    - assets/icons/pause.svg
+    - assets/icons/play.svg
+    - assets/icons/resume.svg
     - assets/instruments/Banjo.svg
     - assets/instruments/Guitar.svg
   fonts:

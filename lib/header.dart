@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:libtab/instrument.dart';
+import 'package:pickin_playmate/controls/toggle.dart';
 
 class PickingHeader extends StatefulWidget {
   const PickingHeader({super.key});
@@ -12,7 +13,7 @@ class PickingHeader extends StatefulWidget {
 class _PickingHeaderState extends State<PickingHeader> {
   @override
   Widget build(BuildContext context) {
-    return const Padding(
+    return Padding(
       padding: EdgeInsets.symmetric(horizontal: 50),
       child: Row(mainAxisSize: MainAxisSize.max, spacing: 10, children: [
         Text('Picking',
@@ -36,11 +37,7 @@ class _PickingHeaderState extends State<PickingHeader> {
                   fontVariations: [FontVariation.weight(500)],
                   color: Colors.black87)),
         ),
-        Text('Settings',
-            style: TextStyle(
-                fontSize: 32,
-                fontVariations: [FontVariation.weight(500)],
-                color: Colors.black87)),
+        Toggle(child: ToggleIcons.settings),
       ]),
     );
   }
