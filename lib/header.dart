@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:libtab/instrument.dart';
+import 'package:pickin_playmate/controls/content_select.dart';
 import 'package:pickin_playmate/controls/toggle.dart';
 
 class PickingHeader extends StatefulWidget {
@@ -15,30 +16,21 @@ class _PickingHeaderState extends State<PickingHeader> {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 50),
-      child: Row(mainAxisSize: MainAxisSize.max, spacing: 10, children: [
-        Text('Picking',
-            style: TextStyle(
-                fontSize: 42,
-                fontVariations: [FontVariation.weight(600)],
-                color: Colors.black87)),
-        _InstrumentIcon(instrument: Instrument.guitar, dimension: 60),
-        SizedBox(width: 30),
-        Text('Songs',
-            style: TextStyle(
-                fontSize: 32,
-                fontVariations: [FontVariation.weight(500)],
-                color: Colors.black87)),
-        SizedBox(width: 20),
-        Expanded(
-          flex: 1,
-          child: Text('Wayfaring Stranger',
-              style: TextStyle(
-                  fontSize: 32,
-                  fontVariations: [FontVariation.weight(500)],
-                  color: Colors.black87)),
-        ),
-        Toggle(child: ToggleIcons.settings),
-      ]),
+      child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(spacing: 20, children: [
+              Text('Picking',
+                  style: TextStyle(
+                      fontSize: 42,
+                      fontVariations: [FontVariation.weight(600)],
+                      color: Colors.black87)),
+              _InstrumentIcon(instrument: Instrument.guitar, dimension: 60),
+            ]),
+            ContentSelection(instrument: Instrument.guitar),
+            Toggle(child: ToggleIcons.settings),
+          ]),
     );
   }
 }
