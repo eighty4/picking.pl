@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.cloudflare_env }}
-      url: ${{ inputs.cloudflare_env == 'production' && 'https://picking-playmate.pages.dev' || format('https://{0}.picking-playmate.pages.dev', inputs.cloudflare_env) }}
+      url: ${{ inputs.cloudflare_env == 'production' && 'https://picking.pl' || format('https://{0}.picking-playmate.pages.dev', inputs.cloudflare_env) }}
     steps:
       - if: ${{ inputs.dev_build && inputs.release_version }}
         name: check inputs

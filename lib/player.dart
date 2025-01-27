@@ -2,10 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:libtab/libtab.dart';
-import 'package:pickin_playmate/content.dart';
+import 'package:pickin_playmate/content/content_type.dart';
 
 class PickingPlayer extends StatefulWidget {
-  const PickingPlayer({super.key});
+  final ContentType contentType;
+
+  const PickingPlayer({super.key, required this.contentType});
 
   @override
   State<PickingPlayer> createState() => _PickingPlayerState();
