@@ -53,11 +53,10 @@ jobs:
         with:
           name: www.zip
       - if: ${{ inputs.release_version }}
-        name: curl www.zip
-        run: |
-          RELEASE_URL="https://api.github.com/repos/eighty4/install.sh/releases/tags/$${{ inputs.release_version }}"
-          ASSET_URL=$(curl -s "$RELEASE_URL" | jq -r '.assets[] | select(.name == "www.zip") | .url')
-          curl -H "Accept: application/octet-stream" -Ls $ASSET_URL > www.zip
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.release_version }}
+        run: gh release download "$TAG" -p www.zip --repo eighty4/picking_playmate
       - run: unzip www.zip -d www
       - uses: actions/setup-node@v4
         with:
