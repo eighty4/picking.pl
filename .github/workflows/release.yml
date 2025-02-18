@@ -1,12 +1,21 @@
-name: Stage
+name: Release
+run-name: Release and deploy to ${{ inputs.cloudflare_env }} env
 
-concurrency: stage
+concurrency: release
 
 on:
   workflow_dispatch:
+    inputs:
+      cloudflare_env:
+        description: Branch name for deploy to Cloudflare Pages
+        type: choice
+        options:
+          - stage
+          - production
+        default: stage
+        required: true
 
 jobs:
-
   verify:
     uses: ./.github/workflows/verify.yml
 
@@ -54,16 +63,16 @@ jobs:
             --prerelease=false \
             --latest=true \
             --notes "https://www.youtube.com/watch?v=GNEzg5pRJzA" \
-            --repo eighty4/picking_playmate \
+            --repo eighty4/picking.pl \
             www.zip
 
   deploy:
-    needs: [ release, tag ]
+    needs: [release, tag]
     permissions:
       contents: read
       deployments: write
     uses: ./.github/workflows/deploy.yml
     with:
-      cloudflare_env: stage
+      cloudflare_env: ${{ inputs.cloudflare_env }}
       release_version: ${{ needs.tag.outputs.tag_name }}
     secrets: inherit
