@@ -7,7 +7,7 @@ on:
   workflow_call:
 
 env:
-  flutter_version: 3.27.1
+  flutter_version: 3.28.0
 
 jobs:
 
