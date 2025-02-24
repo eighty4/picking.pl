@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:libtab/instrument.dart';
 import 'package:pickin_playmate/content/content_type.dart';
 import 'package:pickin_playmate/header.dart';
+import 'package:pickin_playmate/launch.dart';
 import 'package:pickin_playmate/menu/menu.dart';
 import 'package:pickin_playmate/player.dart';
 import 'package:pickin_playmate/widgets/controls.dart';
+import 'package:pickin_playmate/widgets/screen.dart';
 
 void main() {
   runApp(const PickingPlaymate());
@@ -23,28 +24,53 @@ class _PickingPlaymateState extends State<PickingPlaymate> {
   Widget build(BuildContext context) {
     return MaterialApp(
       color: Color.fromARGB(255, 153, 35, 60),
-      home: _PickingPlaymateLayout(),
+      home:
+          PickingLaunch(builder: (context, data) => _PickingLayout(data: data)),
       onGenerateTitle: (context) => 'Picking Playmate',
-      theme: ThemeData(fontFamily: 'Raleway'),
+      theme: ThemeData(
+          fontFamily: 'Raleway',
+          textTheme: TextTheme(
+              bodySmall: TextStyle(
+                  fontSize: 18,
+                  fontVariations: [FontVariation.weight(400)],
+                  color: Colors.black87),
+              bodyMedium: TextStyle(
+                  fontSize: 24,
+                  fontVariations: [FontVariation.weight(400)],
+                  color: Colors.black87),
+              bodyLarge: TextStyle(
+                  fontSize: 36,
+                  fontVariations: [FontVariation.weight(400)],
+                  color: Colors.black87),
+              titleSmall: TextStyle(
+                  fontSize: 26,
+                  fontVariations: [FontVariation.weight(500)],
+                  color: Colors.black87),
+              titleMedium: TextStyle(
+                  fontSize: 42,
+                  fontVariations: [FontVariation.weight(600)],
+                  color: Colors.black87))),
     );
   }
 }
 
-class _PickingPlaymateLayout extends StatefulWidget {
-  const _PickingPlaymateLayout();
+class _PickingLayout extends StatefulWidget {
+  final PickingUserData data;
+
+  const _PickingLayout({required this.data});
 
   @override
-  State<_PickingPlaymateLayout> createState() => _PickingPlaymateLayoutState();
+  State<_PickingLayout> createState() => _PickingLayoutState();
 }
 
-class _PickingPlaymateLayoutState extends State<_PickingPlaymateLayout> {
+class _PickingLayoutState extends State<_PickingLayout> {
   bool isMenuOpen = false;
   late ContentType contentType;
 
   @override
   void initState() {
     super.initState();
-    contentType = ContentType.initial(Instrument.banjo);
+    contentType = ContentType.initial(widget.data.instrument);
   }
 
   openMenu() => setState(() => isMenuOpen = true);
@@ -69,12 +95,12 @@ class _PickingPlaymateLayoutState extends State<_PickingPlaymateLayout> {
     const headerHeight = 100.0;
     const controlsHeight = 100.0;
     final size = MediaQuery.sizeOf(context);
-    return CallbackShortcuts(
-      bindings: keyboardBindings,
-      child: Focus(
-        autofocus: true,
-        child: Scaffold(
-          body: Stack(children: [
+    return PickingScreen(
+      child: CallbackShortcuts(
+        bindings: keyboardBindings,
+        child: Focus(
+          autofocus: true,
+          child: Stack(children: [
             Positioned(
                 top: 0,
                 left: 0,

@@ -16,11 +16,7 @@ class PickingHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(spacing: 20, children: [
-              Text('Picking',
-                  style: TextStyle(
-                      fontSize: 42,
-                      fontVariations: [FontVariation.weight(600)],
-                      color: Colors.black87)),
+              Text('Picking', style: TextTheme.of(context).titleMedium),
               InstrumentIcon(dimension: 60, instrument: instrument),
             ]),
           ]),

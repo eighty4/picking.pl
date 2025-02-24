@@ -109,11 +109,7 @@ class _ContentLinkList extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         spacing: 10,
         children: [
-          Text(category.label(),
-              style: TextStyle(
-                fontSize: 25,
-                fontVariations: [FontVariation.weight(500)],
-              )),
+          Text(category.label(), style: TextTheme.of(context).titleSmall),
           Padding(
               padding: EdgeInsets.only(left: 10),
               child: Column(
@@ -166,9 +162,8 @@ class _ContentLinkState extends State<_ContentLink> {
           widget.onFocus(widget.contentType);
         },
         child: Text(widget.contentType.label(),
-            style: TextStyle(
-                fontSize: 20,
-                fontVariations: [FontVariation.weight(400)],
-                color: focused ? Colors.white : null)));
+            style: TextTheme.of(context)
+                .bodySmall!
+                .copyWith(color: focused ? Colors.white : null)));
   }
 }

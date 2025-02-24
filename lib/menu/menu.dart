@@ -77,12 +77,7 @@ class _PickingMenuState extends State<PickingMenu> {
                             children: [
                               Row(spacing: 20, children: [
                                 Text('Picking',
-                                    style: TextStyle(
-                                        fontSize: 42,
-                                        fontVariations: [
-                                          FontVariation.weight(600),
-                                        ],
-                                        color: Colors.black87)),
+                                    style: TextTheme.of(context).titleMedium),
                                 InstrumentSelect(
                                     currentInstrument:
                                         currentInstrumentSelection,
