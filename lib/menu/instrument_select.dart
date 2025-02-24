@@ -8,8 +8,11 @@ class InstrumentSelect extends StatefulWidget {
   final Instrument currentInstrument;
   final Function(Instrument) onSelection;
 
-  const InstrumentSelect(
-      {super.key, required this.currentInstrument, required this.onSelection});
+  const InstrumentSelect({
+    super.key,
+    required this.currentInstrument,
+    required this.onSelection,
+  });
 
   @override
   State<InstrumentSelect> createState() => _InstrumentSelectState();
@@ -20,11 +23,12 @@ class _InstrumentSelectState extends State<InstrumentSelect> {
 
   set active(bool active) => setState(() => _active = active);
 
-  Map<ShortcutActivator, VoidCallback> get keyBindings => _active
-      ? {
-          SingleActivator(LogicalKeyboardKey.arrowDown): () => active = false,
-        }
-      : {};
+  Map<ShortcutActivator, VoidCallback> get keyBindings =>
+      _active
+          ? {
+            SingleActivator(LogicalKeyboardKey.arrowDown): () => active = false,
+          }
+          : {};
 
   List<Instrument> get otherInstruments {
     if (_active) {
@@ -43,11 +47,17 @@ class _InstrumentSelectState extends State<InstrumentSelect> {
       child: Row(
         children: [
           _InstrumentSelectOption(
+            dimension: 60,
+            instrument: widget.currentInstrument,
+            onSelect: (_) => active = !_active,
+          ),
+          ...(otherInstruments.map(
+            (instrument) => _InstrumentSelectOption(
               dimension: 60,
-              instrument: widget.currentInstrument,
-              onSelect: (_) => active = !_active),
-          ...(otherInstruments.map((instrument) => _InstrumentSelectOption(
-              dimension: 60, instrument: instrument, onSelect: onSelect)))
+              instrument: instrument,
+              onSelect: onSelect,
+            ),
+          )),
         ],
       ),
     );
@@ -64,21 +74,28 @@ class _InstrumentSelectOption extends StatelessWidget {
   final Instrument instrument;
   final Function(Instrument) onSelect;
 
-  const _InstrumentSelectOption(
-      {required this.dimension,
-      required this.instrument,
-      required this.onSelect});
+  const _InstrumentSelectOption({
+    required this.dimension,
+    required this.instrument,
+    required this.onSelect,
+  });
 
   @override
   Widget build(BuildContext context) {
     return CallbackShortcuts(
-        bindings: {
-          SingleActivator(LogicalKeyboardKey.enter): () => onSelect(instrument),
-        },
-        child: Focusable(
-            builder: (context, focused) => Container(
-                color: focused ? Colors.blue : Colors.transparent,
-                child: InstrumentIcon(
-                    dimension: dimension, instrument: instrument))));
+      bindings: {
+        SingleActivator(LogicalKeyboardKey.enter): () => onSelect(instrument),
+      },
+      child: Focusable(
+        builder:
+            (context, focused) => Container(
+              color: focused ? Colors.blue : Colors.transparent,
+              child: InstrumentIcon(
+                dimension: dimension,
+                instrument: instrument,
+              ),
+            ),
+      ),
+    );
   }
 }

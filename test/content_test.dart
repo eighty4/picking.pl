@@ -17,16 +17,24 @@ main() {
   });
   testWidgets('TechniqueContent == on instrument and technique', (_) async {
     final banjoHammerOn = TechniqueContent(
-        instrument: Instrument.banjo, technique: Technique.hammerOn);
+      instrument: Instrument.banjo,
+      technique: Technique.hammerOn,
+    );
     final banjoPullOff = TechniqueContent(
-        instrument: Instrument.banjo, technique: Technique.pullOff);
+      instrument: Instrument.banjo,
+      technique: Technique.pullOff,
+    );
     expect(banjoHammerOn, equals(banjoHammerOn));
     expect(banjoHammerOn, isNot(equals(banjoPullOff)));
 
     final guitarHammerOn = TechniqueContent(
-        instrument: Instrument.guitar, technique: Technique.hammerOn);
+      instrument: Instrument.guitar,
+      technique: Technique.hammerOn,
+    );
     final guitarPullOff = TechniqueContent(
-        instrument: Instrument.guitar, technique: Technique.pullOff);
+      instrument: Instrument.guitar,
+      technique: Technique.pullOff,
+    );
     expect(guitarHammerOn, equals(guitarHammerOn));
     expect(guitarHammerOn, isNot(equals(guitarPullOff)));
 

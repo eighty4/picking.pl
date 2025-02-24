@@ -1,11 +1,6 @@
 import 'package:libtab/libtab.dart';
 
-enum ContentCategory {
-  banjoRolls,
-  guitarStrums,
-  songs,
-  techniques,
-}
+enum ContentCategory { banjoRolls, guitarStrums, songs, techniques }
 
 enum BanjoRoll { forward, backward, forwardBackward, alternatingThumb }
 
@@ -20,11 +15,7 @@ extension on BanjoRoll {
   }
 }
 
-enum GuitarStrum {
-  beachBoys,
-  rem,
-  theBeatles,
-}
+enum GuitarStrum { beachBoys, rem, theBeatles }
 
 extension on GuitarStrum {
   String label() {
@@ -41,8 +32,9 @@ sealed class ContentType {
   factory ContentType.initial(Instrument instrument) {
     return switch (instrument) {
       Instrument.banjo => BanjoRollContent(banjoRoll: BanjoRoll.forward),
-      Instrument.guitar =>
-        GuitarStrumContent(guitarStrum: GuitarStrum.beachBoys),
+      Instrument.guitar => GuitarStrumContent(
+        guitarStrum: GuitarStrum.beachBoys,
+      ),
     };
   }
 
@@ -53,8 +45,7 @@ class BanjoRollContent extends ContentType {
   final BanjoRoll banjoRoll;
 
   BanjoRollContent({required this.banjoRoll})
-      : super(
-            category: ContentCategory.banjoRolls, instrument: Instrument.banjo);
+    : super(category: ContentCategory.banjoRolls, instrument: Instrument.banjo);
 
   @override
   String label() => banjoRoll.label();
@@ -74,9 +65,10 @@ class GuitarStrumContent extends ContentType {
   final GuitarStrum guitarStrum;
 
   GuitarStrumContent({required this.guitarStrum})
-      : super(
-            category: ContentCategory.guitarStrums,
-            instrument: Instrument.guitar);
+    : super(
+        category: ContentCategory.guitarStrums,
+        instrument: Instrument.guitar,
+      );
 
   @override
   String label() => guitarStrum.label();
@@ -96,7 +88,7 @@ class SongContent extends ContentType {
   final String song;
 
   SongContent({required super.instrument, required this.song})
-      : super(category: ContentCategory.songs);
+    : super(category: ContentCategory.songs);
 
   @override
   String label() => song;
@@ -117,14 +109,14 @@ class TechniqueContent extends ContentType {
   final Technique technique;
 
   TechniqueContent({required super.instrument, required this.technique})
-      : super(category: ContentCategory.techniques);
+    : super(category: ContentCategory.techniques);
 
   @override
   String label() => switch (technique) {
-        Technique.hammerOn => 'Hammer-on',
-        Technique.pullOff => 'Pull-off',
-        Technique.slide => 'Slide',
-      };
+    Technique.hammerOn => 'Hammer-on',
+    Technique.pullOff => 'Pull-off',
+    Technique.slide => 'Slide',
+  };
 
   @override
   bool operator ==(Object other) =>

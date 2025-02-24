@@ -24,32 +24,40 @@ class _PickingPlaymateState extends State<PickingPlaymate> {
   Widget build(BuildContext context) {
     return MaterialApp(
       color: Color.fromARGB(255, 153, 35, 60),
-      home:
-          PickingLaunch(builder: (context, data) => _PickingLayout(data: data)),
+      home: PickingLaunch(
+        builder: (context, data) => _PickingLayout(data: data),
+      ),
       onGenerateTitle: (context) => 'Picking Playmate',
       theme: ThemeData(
-          fontFamily: 'Raleway',
-          textTheme: TextTheme(
-              bodySmall: TextStyle(
-                  fontSize: 18,
-                  fontVariations: [FontVariation.weight(400)],
-                  color: Colors.black87),
-              bodyMedium: TextStyle(
-                  fontSize: 24,
-                  fontVariations: [FontVariation.weight(400)],
-                  color: Colors.black87),
-              bodyLarge: TextStyle(
-                  fontSize: 36,
-                  fontVariations: [FontVariation.weight(400)],
-                  color: Colors.black87),
-              titleSmall: TextStyle(
-                  fontSize: 26,
-                  fontVariations: [FontVariation.weight(500)],
-                  color: Colors.black87),
-              titleMedium: TextStyle(
-                  fontSize: 42,
-                  fontVariations: [FontVariation.weight(600)],
-                  color: Colors.black87))),
+        fontFamily: 'Raleway',
+        textTheme: TextTheme(
+          bodySmall: TextStyle(
+            fontSize: 18,
+            fontVariations: [FontVariation.weight(400)],
+            color: Colors.black87,
+          ),
+          bodyMedium: TextStyle(
+            fontSize: 24,
+            fontVariations: [FontVariation.weight(400)],
+            color: Colors.black87,
+          ),
+          bodyLarge: TextStyle(
+            fontSize: 36,
+            fontVariations: [FontVariation.weight(400)],
+            color: Colors.black87,
+          ),
+          titleSmall: TextStyle(
+            fontSize: 26,
+            fontVariations: [FontVariation.weight(500)],
+            color: Colors.black87,
+          ),
+          titleMedium: TextStyle(
+            fontSize: 42,
+            fontVariations: [FontVariation.weight(600)],
+            color: Colors.black87,
+          ),
+        ),
+      ),
     );
   }
 }
@@ -78,9 +86,9 @@ class _PickingLayoutState extends State<_PickingLayout> {
   closeMenu() => setState(() => isMenuOpen = false);
 
   onContentSelection(ContentType contentType) => setState(() {
-        this.contentType = contentType;
-        isMenuOpen = false;
-      });
+    this.contentType = contentType;
+    isMenuOpen = false;
+  });
 
   Map<SingleActivator, VoidCallback> get keyboardBindings {
     if (isMenuOpen) {
@@ -100,37 +108,43 @@ class _PickingLayoutState extends State<_PickingLayout> {
         bindings: keyboardBindings,
         child: Focus(
           autofocus: true,
-          child: Stack(children: [
-            Positioned(
-                top: 0,
-                left: 0,
-                width: size.width,
-                height: headerHeight,
-                child: PickingHeader(instrument: contentType.instrument)),
-            Positioned(
-                top: headerHeight,
-                bottom: controlsHeight,
-                left: 0,
-                width: size.width,
-                child: PickingPlayer(contentType: contentType)),
-            Positioned(
-                bottom: 0,
-                left: 0,
-                width: size.width,
-                height: controlsHeight,
-                child: const PickingControls()),
-            if (isMenuOpen)
+          child: Stack(
+            children: [
               Positioned(
                 top: 0,
                 left: 0,
                 width: size.width,
-                height: size.height,
-                child: PickingMenu(
+                height: headerHeight,
+                child: PickingHeader(instrument: contentType.instrument),
+              ),
+              Positioned(
+                top: headerHeight,
+                bottom: controlsHeight,
+                left: 0,
+                width: size.width,
+                child: PickingPlayer(contentType: contentType),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                width: size.width,
+                height: controlsHeight,
+                child: const PickingControls(),
+              ),
+              if (isMenuOpen)
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  width: size.width,
+                  height: size.height,
+                  child: PickingMenu(
                     currentContentType: contentType,
                     onClose: closeMenu,
-                    onContentSelection: onContentSelection),
-              ),
-          ]),
+                    onContentSelection: onContentSelection,
+                  ),
+                ),
+            ],
+          ),
         ),
       ),
     );

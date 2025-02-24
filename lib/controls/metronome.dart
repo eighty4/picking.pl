@@ -13,6 +13,8 @@ class _MetronomeState extends State<Metronome> {
   @override
   Widget build(BuildContext context) {
     return Slider(
-        value: value, onChanged: (value) => setState(() => this.value = value));
+      value: value,
+      onChanged: (value) => setState(() => this.value = value),
+    );
   }
 }

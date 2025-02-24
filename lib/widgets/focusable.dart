@@ -8,14 +8,15 @@ class Focusable extends StatefulWidget {
   final VoidCallback? onFocus;
   final Function(bool)? onFocusChange;
 
-  const Focusable(
-      {super.key,
-      this.autofocus = false,
-      this.focusNode,
-      required this.builder,
-      this.onBlur,
-      this.onFocus,
-      this.onFocusChange});
+  const Focusable({
+    super.key,
+    this.autofocus = false,
+    this.focusNode,
+    required this.builder,
+    this.onBlur,
+    this.onFocus,
+    this.onFocusChange,
+  });
 
   @override
   State<Focusable> createState() => _FocusableState();

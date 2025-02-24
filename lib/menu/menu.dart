@@ -26,11 +26,12 @@ class PickingMenu extends StatefulWidget {
   final VoidCallback onClose;
   final ContentTypeCallback onContentSelection;
 
-  const PickingMenu(
-      {super.key,
-      required this.currentContentType,
-      required this.onClose,
-      required this.onContentSelection});
+  const PickingMenu({
+    super.key,
+    required this.currentContentType,
+    required this.onClose,
+    required this.onContentSelection,
+  });
 
   @override
   State<PickingMenu> createState() => _PickingMenuState();
@@ -50,65 +51,75 @@ class _PickingMenuState extends State<PickingMenu> {
       setState(() => _menuSelection = menuSelection);
 
   Instrument get currentInstrumentSelection => switch (_menuSelection) {
-        null => widget.currentContentType.instrument,
-        _ContentTypeSelection(selection: var selection) => selection.instrument,
-        _InstrumentSelection(instrument: var instrument) => instrument,
-      };
+    null => widget.currentContentType.instrument,
+    _ContentTypeSelection(selection: var selection) => selection.instrument,
+    _InstrumentSelection(instrument: var instrument) => instrument,
+  };
 
   @override
   Widget build(BuildContext context) {
     return _PickingMenuAnimation(
       onCloseCompleted: _closingMenuCallback,
       child: Container(
-          color: Colors.deepOrangeAccent,
-          child: CallbackShortcuts(
-            bindings: keyBindings,
-            child: FocusScope(
-              autofocus: true,
-              child: Column(
-                children: [
-                  Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                      child: SizedBox(
-                        height: 100,
-                        child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(spacing: 20, children: [
-                                Text('Picking',
-                                    style: TextTheme.of(context).titleMedium),
-                                InstrumentSelect(
-                                    currentInstrument:
-                                        currentInstrumentSelection,
-                                    onSelection: changeInstrument),
-                              ]),
-                              Focus(child: Toggle(child: ToggleIcons.settings)),
-                            ]),
-                      )),
-                  ContentSelection(
-                      current: widget.currentContentType,
-                      focusNode: _contentFocusNode,
-                      instrument: currentInstrumentSelection,
-                      onSelectionFocus: changeContentType)
-                ],
-              ),
+        color: Colors.deepOrangeAccent,
+        child: CallbackShortcuts(
+          bindings: keyBindings,
+          child: FocusScope(
+            autofocus: true,
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 50),
+                  child: SizedBox(
+                    height: 100,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          spacing: 20,
+                          children: [
+                            Text(
+                              'Picking',
+                              style: TextTheme.of(context).titleMedium,
+                            ),
+                            InstrumentSelect(
+                              currentInstrument: currentInstrumentSelection,
+                              onSelection: changeInstrument,
+                            ),
+                          ],
+                        ),
+                        Focus(child: Toggle(child: ToggleIcons.settings)),
+                      ],
+                    ),
+                  ),
+                ),
+                ContentSelection(
+                  current: widget.currentContentType,
+                  focusNode: _contentFocusNode,
+                  instrument: currentInstrumentSelection,
+                  onSelectionFocus: changeContentType,
+                ),
+              ],
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 
   Map<ShortcutActivator, VoidCallback> get keyBindings => {
-        SingleActivator(LogicalKeyboardKey.escape): () =>
-            closingMenuCallback = widget.onClose,
-        SingleActivator(LogicalKeyboardKey.enter): () =>
+    SingleActivator(LogicalKeyboardKey.escape):
+        () => closingMenuCallback = widget.onClose,
+    SingleActivator(LogicalKeyboardKey.enter):
+        () =>
             closingMenuCallback = switch (_menuSelection) {
-              _ContentTypeSelection(selection: var selection) => () =>
-                  widget.onContentSelection(selection),
+              _ContentTypeSelection(selection: var selection) =>
+                () => widget.onContentSelection(selection),
               _InstrumentSelection() => null,
-              null => widget.onClose
+              null => widget.onClose,
             },
-      };
+  };
 
   changeContentType(ContentType contentType) {
     if (kDebugMode) {
@@ -122,12 +133,16 @@ class _PickingMenuState extends State<PickingMenu> {
       print('_PickingMenuState.changeInstrument($instrument)');
     }
     changeContentType(switch (widget.currentContentType) {
-      TechniqueContent(technique: var technique) =>
-        TechniqueContent(instrument: instrument, technique: technique),
-      BanjoRollContent() =>
-        GuitarStrumContent(guitarStrum: GuitarStrum.values.first),
-      GuitarStrumContent() =>
-        BanjoRollContent(banjoRoll: BanjoRoll.values.first),
+      TechniqueContent(technique: var technique) => TechniqueContent(
+        instrument: instrument,
+        technique: technique,
+      ),
+      BanjoRollContent() => GuitarStrumContent(
+        guitarStrum: GuitarStrum.values.first,
+      ),
+      GuitarStrumContent() => BanjoRollContent(
+        banjoRoll: BanjoRoll.values.first,
+      ),
       _ => throw UnimplementedError(),
     });
   }
@@ -153,14 +168,22 @@ class _PickingMenuAnimationState extends State<_PickingMenuAnimation>
   @override
   void initState() {
     super.initState();
-    controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 150));
-    opacity = Tween<double>(begin: 0, end: 1).animate(CurvedAnimation(
-        parent: controller, curve: const Interval(0, 1, curve: Curves.ease)))
-      ..addListener(() => setState(() {}));
-    scale = Tween<double>(begin: .5, end: 1).animate(CurvedAnimation(
-        parent: controller, curve: const Interval(0, 1, curve: Curves.ease)))
-      ..addListener(() => setState(() {}));
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 150),
+    );
+    opacity = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: const Interval(0, 1, curve: Curves.ease),
+      ),
+    )..addListener(() => setState(() {}));
+    scale = Tween<double>(begin: .5, end: 1).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: const Interval(0, 1, curve: Curves.ease),
+      ),
+    )..addListener(() => setState(() {}));
     controller.forward().then((_) {});
   }
 
@@ -178,10 +201,7 @@ class _PickingMenuAnimationState extends State<_PickingMenuAnimation>
   Widget build(BuildContext context) {
     return Opacity(
       opacity: opacity.value,
-      child: Transform.scale(
-        scale: scale.value,
-        child: widget.child,
-      ),
+      child: Transform.scale(scale: scale.value, child: widget.child),
     );
   }
 

@@ -12,14 +12,18 @@ class PickingHeader extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 50),
       child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(spacing: 20, children: [
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            spacing: 20,
+            children: [
               Text('Picking', style: TextTheme.of(context).titleMedium),
               InstrumentIcon(dimension: 60, instrument: instrument),
-            ]),
-          ]),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

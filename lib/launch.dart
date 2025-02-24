@@ -73,15 +73,16 @@ class _PickingLaunchState extends State<PickingLaunch> {
         }
         if (selectedInstrument == null) {
           return _PickingLaunchInstrumentSelect(
-              onInstrumentSelect: (instrument) {
-            PickingUserData.saveInstrument(instrument);
-            setState(() => selectedInstrument = instrument);
-          });
+            onInstrumentSelect: (instrument) {
+              PickingUserData.saveInstrument(instrument);
+              setState(() => selectedInstrument = instrument);
+            },
+          );
         } else {
           return widget.builder(
-              context,
-              PickingUserData(
-                  instrument: selectedInstrument!, returnUser: false));
+            context,
+            PickingUserData(instrument: selectedInstrument!, returnUser: false),
+          );
         }
       },
     );
@@ -105,9 +106,9 @@ class _PickingLaunchInstrumentSelectState
   Instrument? _selected;
 
   set hovered(Instrument? v) => setState(() {
-        _hovered = v;
-        _mouse = true;
-      });
+    _hovered = v;
+    _mouse = true;
+  });
 
   set mouse(bool v) => setState(() => _mouse = v);
 
@@ -127,19 +128,25 @@ class _PickingLaunchInstrumentSelectState
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Text('Let\'s pick your weapon!',
-              style: TextTheme.of(context).bodyLarge),
+          Text(
+            'Let\'s pick your weapon!',
+            style: TextTheme.of(context).bodyLarge,
+          ),
           buildInstrumentOptions(instrumentSize),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.lightBlueAccent),
+              backgroundColor: Colors.lightBlueAccent,
+            ),
             onPressed: _selected == null ? null : onSelection,
             child: Padding(
-                padding: EdgeInsets.all(8),
-                child: Text('Continue',
-                    style: TextTheme.of(context)
-                        .bodyMedium!
-                        .copyWith(color: Colors.white70, fontSize: 32))),
+              padding: EdgeInsets.all(8),
+              child: Text(
+                'Continue',
+                style: TextTheme.of(
+                  context,
+                ).bodyMedium!.copyWith(color: Colors.white70, fontSize: 32),
+              ),
+            ),
           ),
         ],
       ),
@@ -150,10 +157,10 @@ class _PickingLaunchInstrumentSelectState
     const switchDuration = Duration(milliseconds: 250);
     return CallbackShortcuts(
       bindings: {
-        SingleActivator(LogicalKeyboardKey.arrowLeft): () =>
-            selected = Instrument.banjo,
-        SingleActivator(LogicalKeyboardKey.arrowRight): () =>
-            selected = Instrument.guitar,
+        SingleActivator(LogicalKeyboardKey.arrowLeft):
+            () => selected = Instrument.banjo,
+        SingleActivator(LogicalKeyboardKey.arrowRight):
+            () => selected = Instrument.guitar,
         SingleActivator(LogicalKeyboardKey.escape): () => selected = null,
         SingleActivator(LogicalKeyboardKey.enter): () => onSelection(),
       },
@@ -165,11 +172,13 @@ class _PickingLaunchInstrumentSelectState
           spacing: instrumentSize * .5,
           children: [
             AnimatedSwitcher(
-                duration: switchDuration,
-                child: buildBanjoSideContent(instrumentSize)),
+              duration: switchDuration,
+              child: buildBanjoSideContent(instrumentSize),
+            ),
             AnimatedSwitcher(
-                duration: switchDuration,
-                child: buildGuitarSideContent(instrumentSize)),
+              duration: switchDuration,
+              child: buildGuitarSideContent(instrumentSize),
+            ),
           ],
         ),
       ),
@@ -179,7 +188,9 @@ class _PickingLaunchInstrumentSelectState
   Widget buildBanjoSideContent(double instrumentSize) {
     if (_selected == Instrument.guitar) {
       return buildInstrumentBrief(
-          'Start guitar with strumming', instrumentSize);
+        'Start guitar with strumming',
+        instrumentSize,
+      );
     } else {
       return buildInstrumentOption(Instrument.banjo, instrumentSize);
     }
@@ -188,7 +199,9 @@ class _PickingLaunchInstrumentSelectState
   Widget buildGuitarSideContent(double instrumentSize) {
     if (_selected == Instrument.banjo) {
       return buildInstrumentBrief(
-          'Start banjo with Scruggs style rolls', instrumentSize);
+        'Start banjo with Scruggs style rolls',
+        instrumentSize,
+      );
     } else {
       return buildInstrumentOption(Instrument.guitar, instrumentSize);
     }
@@ -196,27 +209,33 @@ class _PickingLaunchInstrumentSelectState
 
   Widget buildInstrumentBrief(String text, double instrumentSize) {
     return SizedBox.square(
-        dimension: instrumentSize,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text(text,
-                style: TextTheme.of(context).bodyLarge,
-                textAlign: TextAlign.center),
-            if (_mouse)
-              MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: GestureDetector(
-                    onTap: () => selected = null,
-                    child: SizedBox.square(
-                        dimension: 44,
-                        child: SvgPicture.asset('assets/icons/cross.svg',
-                            colorFilter:
-                                ColorFilter.mode(Colors.red, BlendMode.srcIn),
-                            semanticsLabel: 'Cancel'))),
-              )
-          ],
-        ));
+      dimension: instrumentSize,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Text(
+            text,
+            style: TextTheme.of(context).bodyLarge,
+            textAlign: TextAlign.center,
+          ),
+          if (_mouse)
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: () => selected = null,
+                child: SizedBox.square(
+                  dimension: 44,
+                  child: SvgPicture.asset(
+                    'assets/icons/cross.svg',
+                    colorFilter: ColorFilter.mode(Colors.red, BlendMode.srcIn),
+                    semanticsLabel: 'Cancel',
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
   }
 
   Widget buildInstrumentOption(Instrument instrument, double size) {
@@ -230,15 +249,18 @@ class _PickingLaunchInstrumentSelectState
         onEnter: (_) => hovered = instrument,
         onExit: (_) => hovered = null,
         child: Container(
-            width: size,
-            height: size,
-            padding: EdgeInsets.all(size * .1),
-            decoration: BoxDecoration(
-                border: Border.all(
-                    color: instrumentBorderColor(instrument), width: 5),
-                borderRadius: BorderRadius.circular(size * .1)),
-            child:
-                InstrumentIcon(dimension: size * .8, instrument: instrument)),
+          width: size,
+          height: size,
+          padding: EdgeInsets.all(size * .1),
+          decoration: BoxDecoration(
+            border: Border.all(
+              color: instrumentBorderColor(instrument),
+              width: 5,
+            ),
+            borderRadius: BorderRadius.circular(size * .1),
+          ),
+          child: InstrumentIcon(dimension: size * .8, instrument: instrument),
+        ),
       ),
     );
   }

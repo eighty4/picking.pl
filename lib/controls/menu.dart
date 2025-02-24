@@ -6,12 +6,13 @@ class Menu extends StatefulWidget {
   final List<String> options;
   final String selected;
 
-  const Menu(
-      {super.key,
-      required this.dropdownWidth,
-      required this.onSelect,
-      required this.options,
-      required this.selected});
+  const Menu({
+    super.key,
+    required this.dropdownWidth,
+    required this.onSelect,
+    required this.options,
+    required this.selected,
+  });
 
   @override
   State<Menu> createState() => _MenuState();
@@ -32,16 +33,19 @@ class _MenuState extends State<Menu> {
           top: renderBox.size.height + position.dy + 5,
           left: position.dx,
           child: TapRegion(
-              onTapOutside: (event) => {
-                    if (!hovering) {controller.hide()}
-                  },
-              child: _MenuOptions(
-                  onSelect: (i) {
-                    controller.hide();
-                    widget.onSelect(i);
-                  },
-                  options: widget.options,
-                  width: widget.dropdownWidth)),
+            onTapOutside:
+                (event) => {
+                  if (!hovering) {controller.hide()},
+                },
+            child: _MenuOptions(
+              onSelect: (i) {
+                controller.hide();
+                widget.onSelect(i);
+              },
+              options: widget.options,
+              width: widget.dropdownWidth,
+            ),
+          ),
         );
       },
       child: GestureDetector(
@@ -50,13 +54,14 @@ class _MenuState extends State<Menu> {
           onEnter: (_) => hovering = true,
           onExit: (_) => hovering = false,
           child: _MenuButton(
-              width: widget.dropdownWidth,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(widget.selected, style: TextStyle(color: Colors.black)),
-                ],
-              )),
+            width: widget.dropdownWidth,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(widget.selected, style: TextStyle(color: Colors.black)),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -74,11 +79,14 @@ class _MenuButton extends StatelessWidget {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: Container(
-          height: 50,
-          width: width,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5), color: Colors.black12),
-          child: child),
+        height: 50,
+        width: width,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.black12,
+        ),
+        child: child,
+      ),
     );
   }
 }
@@ -88,24 +96,34 @@ class _MenuOptions extends StatelessWidget {
   final List<String> options;
   final double width;
 
-  const _MenuOptions(
-      {required this.onSelect, required this.options, required this.width});
+  const _MenuOptions({
+    required this.onSelect,
+    required this.options,
+    required this.width,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5), color: Colors.black26),
-        padding: EdgeInsets.all(5),
-        child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: options.indexed
-                .map((option) => _MenuOption(
-                    onSelect: () => onSelect(option.$1),
-                    option: option.$2,
-                    width: width))
-                .toList(growable: false)));
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Colors.black26,
+      ),
+      padding: EdgeInsets.all(5),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: options.indexed
+            .map(
+              (option) => _MenuOption(
+                onSelect: () => onSelect(option.$1),
+                option: option.$2,
+                width: width,
+              ),
+            )
+            .toList(growable: false),
+      ),
+    );
   }
 }
 
@@ -114,8 +132,11 @@ class _MenuOption extends StatefulWidget {
   final String option;
   final double width;
 
-  const _MenuOption(
-      {required this.onSelect, required this.option, required this.width});
+  const _MenuOption({
+    required this.onSelect,
+    required this.option,
+    required this.width,
+  });
 
   @override
   State<_MenuOption> createState() => _MenuOptionState();
@@ -134,7 +155,9 @@ class _MenuOptionState extends State<_MenuOption> {
         onExit: (_) => setState(() => hovering = false),
         child: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(2.5), color: color),
+            borderRadius: BorderRadius.circular(2.5),
+            color: color,
+          ),
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           width: widget.width,
           child: Text(widget.option, style: TextStyle(color: textColor)),

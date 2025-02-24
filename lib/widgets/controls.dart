@@ -18,15 +18,19 @@ class _PickingControlsState extends State<PickingControls> {
     return Center(
       child: SizedBox(
         width: min(1100.0, MediaQuery.sizeOf(context).width * .8),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          PlayMode(),
-          Metronome(),
-          ToggleGroup(toggles: [
-            Toggle(enabled: false, child: ToggleIcons.previous),
-            Toggle(child: ToggleIcons.next),
-          ]),
-        ]),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            PlayMode(),
+            Metronome(),
+            ToggleGroup(
+              toggles: [
+                Toggle(enabled: false, child: ToggleIcons.previous),
+                Toggle(child: ToggleIcons.next),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

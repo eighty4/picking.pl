@@ -17,10 +17,13 @@ class _PickingPlayerState extends State<PickingPlayer> {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: MeasureDisplay(getPickingContent(Instrument.guitar),
-            instrument: Instrument.guitar,
-            tabContext: TabContext.forBrightness(Brightness.light),
-            size: measureSize(context)));
+      child: MeasureDisplay(
+        getPickingContent(Instrument.guitar),
+        instrument: Instrument.guitar,
+        tabContext: TabContext.forBrightness(Brightness.light),
+        size: measureSize(context),
+      ),
+    );
   }
 
   Size measureSize(BuildContext context) {

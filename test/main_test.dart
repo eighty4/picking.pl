@@ -10,6 +10,8 @@ main() {
     await tester.pumpWidget(PickingPlaymate());
     expect(find.byType(MeasureDisplay).evaluate().length, equals(1));
     await expectLater(
-        find.byType(PickingPlaymate), matchesGoldenFile('gold/main.png'));
+      find.byType(PickingPlaymate),
+      matchesGoldenFile('gold/main.png'),
+    );
   }, skip: true);
 }
