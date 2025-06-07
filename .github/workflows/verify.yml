@@ -7,7 +7,7 @@ on:
   workflow_call:
 
 env:
-  flutter_version: 3.29.0
+  flutter_version: 3.32.2
 
 jobs:
   verify:
@@ -48,10 +48,10 @@ jobs:
         with:
           repository: eighty4/libtab
           path: libtab
-      - uses: subosito/flutter-action@v2
+      - uses: flutter-actions/setup-flutter@v4
         with:
-          flutter-version: ${{ env.flutter_version }}
-          channel: "stable"
+          cache-sdk: true
+          version: ${{ env.flutter_version }}
       - name: build web
         run: flutter build web
         working-directory: pp
@@ -72,10 +72,10 @@ jobs:
         with:
           repository: eighty4/libtab
           path: libtab
-      - uses: subosito/flutter-action@v2
+      - uses: flutter-actions/setup-flutter@v4
         with:
-          flutter-version: ${{ env.flutter_version }}
-          channel: "stable"
+          cache-sdk: true
+          version: ${{ env.flutter_version }}
       - name: format
         run: dart format lib test --set-exit-if-changed
         working-directory: pp
@@ -90,10 +90,10 @@ jobs:
         with:
           repository: eighty4/libtab
           path: libtab
-      - uses: subosito/flutter-action@v2
+      - uses: flutter-actions/setup-flutter@v4
         with:
-          flutter-version: ${{ env.flutter_version }}
-          channel: "stable"
+          cache-sdk: true
+          version: ${{ env.flutter_version }}
       - name: test
         run: flutter test
         working-directory: pp

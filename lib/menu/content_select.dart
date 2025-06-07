@@ -14,19 +14,24 @@ extension on ContentCategory {
 
   List<ContentType> options(Instrument instrument) {
     return switch (this) {
-      ContentCategory.banjoRolls => BanjoRoll.values
-          .map((banjoRoll) => BanjoRollContent(banjoRoll: banjoRoll))
-          .toList(growable: false),
-      ContentCategory.guitarStrums => GuitarStrum.values
-          .map((guitarStrum) => GuitarStrumContent(guitarStrum: guitarStrum))
-          .toList(growable: false),
+      ContentCategory.banjoRolls =>
+        BanjoRoll.values
+            .map((banjoRoll) => BanjoRollContent(banjoRoll: banjoRoll))
+            .toList(growable: false),
+      ContentCategory.guitarStrums =>
+        GuitarStrum.values
+            .map((guitarStrum) => GuitarStrumContent(guitarStrum: guitarStrum))
+            .toList(growable: false),
       ContentCategory.songs => throw UnimplementedError(),
-      ContentCategory.techniques => Technique.values
-          .map(
-            (technique) =>
-                TechniqueContent(instrument: instrument, technique: technique),
-          )
-          .toList(growable: false),
+      ContentCategory.techniques =>
+        Technique.values
+            .map(
+              (technique) => TechniqueContent(
+                instrument: instrument,
+                technique: technique,
+              ),
+            )
+            .toList(growable: false),
     };
   }
 }

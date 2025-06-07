@@ -157,10 +157,10 @@ class _PickingLaunchInstrumentSelectState
     const switchDuration = Duration(milliseconds: 250);
     return CallbackShortcuts(
       bindings: {
-        SingleActivator(LogicalKeyboardKey.arrowLeft):
-            () => selected = Instrument.banjo,
-        SingleActivator(LogicalKeyboardKey.arrowRight):
-            () => selected = Instrument.guitar,
+        SingleActivator(LogicalKeyboardKey.arrowLeft): () =>
+            selected = Instrument.banjo,
+        SingleActivator(LogicalKeyboardKey.arrowRight): () =>
+            selected = Instrument.guitar,
         SingleActivator(LogicalKeyboardKey.escape): () => selected = null,
         SingleActivator(LogicalKeyboardKey.enter): () => onSelection(),
       },

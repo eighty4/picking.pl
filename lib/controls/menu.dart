@@ -33,10 +33,9 @@ class _MenuState extends State<Menu> {
           top: renderBox.size.height + position.dy + 5,
           left: position.dx,
           child: TapRegion(
-            onTapOutside:
-                (event) => {
-                  if (!hovering) {controller.hide()},
-                },
+            onTapOutside: (event) => {
+              if (!hovering) {controller.hide()},
+            },
             child: _MenuOptions(
               onSelect: (i) {
                 controller.hide();

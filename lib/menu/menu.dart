@@ -109,16 +109,15 @@ class _PickingMenuState extends State<PickingMenu> {
   }
 
   Map<ShortcutActivator, VoidCallback> get keyBindings => {
-    SingleActivator(LogicalKeyboardKey.escape):
-        () => closingMenuCallback = widget.onClose,
-    SingleActivator(LogicalKeyboardKey.enter):
-        () =>
-            closingMenuCallback = switch (_menuSelection) {
-              _ContentTypeSelection(selection: var selection) =>
-                () => widget.onContentSelection(selection),
-              _InstrumentSelection() => null,
-              null => widget.onClose,
-            },
+    SingleActivator(LogicalKeyboardKey.escape): () =>
+        closingMenuCallback = widget.onClose,
+    SingleActivator(LogicalKeyboardKey.enter): () =>
+        closingMenuCallback = switch (_menuSelection) {
+          _ContentTypeSelection(selection: var selection) =>
+            () => widget.onContentSelection(selection),
+          _InstrumentSelection() => null,
+          null => widget.onClose,
+        },
   };
 
   changeContentType(ContentType contentType) {

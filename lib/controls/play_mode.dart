@@ -16,15 +16,13 @@ class _PlayModeState extends State<PlayMode> {
   @override
   Widget build(BuildContext context) {
     return Toggle(
-      onTap:
-          () => setState(
-            () =>
-                mode = switch (mode) {
-                  _PlayingMode.unstarted => _PlayingMode.playing,
-                  _PlayingMode.playing => _PlayingMode.paused,
-                  _PlayingMode.paused => _PlayingMode.playing,
-                },
-          ),
+      onTap: () => setState(
+        () => mode = switch (mode) {
+          _PlayingMode.unstarted => _PlayingMode.playing,
+          _PlayingMode.playing => _PlayingMode.paused,
+          _PlayingMode.paused => _PlayingMode.playing,
+        },
+      ),
       child: AnimatedSwitcher(
         duration: Duration(milliseconds: 50),
         child: switch (mode) {

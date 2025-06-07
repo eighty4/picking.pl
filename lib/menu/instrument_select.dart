@@ -23,12 +23,9 @@ class _InstrumentSelectState extends State<InstrumentSelect> {
 
   set active(bool active) => setState(() => _active = active);
 
-  Map<ShortcutActivator, VoidCallback> get keyBindings =>
-      _active
-          ? {
-            SingleActivator(LogicalKeyboardKey.arrowDown): () => active = false,
-          }
-          : {};
+  Map<ShortcutActivator, VoidCallback> get keyBindings => _active
+      ? {SingleActivator(LogicalKeyboardKey.arrowDown): () => active = false}
+      : {};
 
   List<Instrument> get otherInstruments {
     if (_active) {
@@ -87,14 +84,10 @@ class _InstrumentSelectOption extends StatelessWidget {
         SingleActivator(LogicalKeyboardKey.enter): () => onSelect(instrument),
       },
       child: Focusable(
-        builder:
-            (context, focused) => Container(
-              color: focused ? Colors.blue : Colors.transparent,
-              child: InstrumentIcon(
-                dimension: dimension,
-                instrument: instrument,
-              ),
-            ),
+        builder: (context, focused) => Container(
+          color: focused ? Colors.blue : Colors.transparent,
+          child: InstrumentIcon(dimension: dimension, instrument: instrument),
+        ),
       ),
     );
   }
