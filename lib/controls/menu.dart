@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class Menu extends StatefulWidget {
   final double dropdownWidth;
-  final Function(int) onSelect;
+  final Function(int index) onSelect;
   final List<String> options;
   final String selected;
 
@@ -91,7 +91,7 @@ class _MenuButton extends StatelessWidget {
 }
 
 class _MenuOptions extends StatelessWidget {
-  final Function(int) onSelect;
+  final Function(int index) onSelect;
   final List<String> options;
   final double width;
 

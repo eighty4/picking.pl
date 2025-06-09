@@ -6,7 +6,7 @@ class Focusable extends StatefulWidget {
   final FocusNode? focusNode;
   final VoidCallback? onBlur;
   final VoidCallback? onFocus;
-  final Function(bool)? onFocusChange;
+  final Function(bool focused)? onFocusChange;
 
   const Focusable({
     super.key,

@@ -6,7 +6,7 @@ import 'package:pickin_playmate/widgets/instrument_icon.dart';
 
 class InstrumentSelect extends StatefulWidget {
   final Instrument currentInstrument;
-  final Function(Instrument) onSelection;
+  final Function(Instrument instrument) onSelection;
 
   const InstrumentSelect({
     super.key,
@@ -69,7 +69,7 @@ class _InstrumentSelectState extends State<InstrumentSelect> {
 class _InstrumentSelectOption extends StatelessWidget {
   final double dimension;
   final Instrument instrument;
-  final Function(Instrument) onSelect;
+  final Function(Instrument instrument) onSelect;
 
   const _InstrumentSelectOption({
     required this.dimension,
@@ -85,7 +85,7 @@ class _InstrumentSelectOption extends StatelessWidget {
       },
       child: Focusable(
         builder: (context, focused) => Container(
-          color: focused ? Colors.blue : Colors.transparent,
+          color: focused ? Colors.lightBlueAccent : Colors.transparent,
           child: InstrumentIcon(dimension: dimension, instrument: instrument),
         ),
       ),

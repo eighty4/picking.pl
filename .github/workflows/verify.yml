@@ -95,5 +95,5 @@ jobs:
           cache-sdk: true
           version: ${{ env.flutter_version }}
       - name: test
-        run: flutter test
+        run: flutter test --dart-define CI=true
         working-directory: pp

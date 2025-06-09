@@ -1,10 +1,28 @@
 import 'package:libtab/libtab.dart';
 
-enum ContentCategory { banjoRolls, guitarStrums, songs, techniques }
+enum ContentCategory {
+  loadingPlaceholder,
+  banjoRolls,
+  guitarStrums,
+  songs,
+  techniques,
+}
+
+extension ContentCategoryLabel on ContentCategory {
+  String label() {
+    return switch (this) {
+      ContentCategory.loadingPlaceholder => '',
+      ContentCategory.banjoRolls => 'Banjo Rolls',
+      ContentCategory.guitarStrums => 'Guitar Strums',
+      ContentCategory.songs => 'Songs',
+      ContentCategory.techniques => 'Techniques',
+    };
+  }
+}
 
 enum BanjoRoll { forward, backward, forwardBackward, alternatingThumb }
 
-extension on BanjoRoll {
+extension BanjoRollLabel on BanjoRoll {
   String label() {
     return switch (this) {
       BanjoRoll.forward => 'Forward Roll',
@@ -17,7 +35,7 @@ extension on BanjoRoll {
 
 enum GuitarStrum { beachBoys, rem, theBeatles }
 
-extension on GuitarStrum {
+extension GuitarStrumLabel on GuitarStrum {
   String label() {
     return 'Bum ditty yo';
   }
@@ -38,7 +56,86 @@ sealed class ContentType {
     };
   }
 
+  factory ContentType.fromCacheId(String cacheId) {
+    final parts = cacheId.split('::');
+    if (parts.length != 3) {
+      throw ArgumentError('$cacheId is invalid');
+    }
+    final instrumentId = parts[0];
+    final categoryId = parts[1];
+    final contentId = parts[2];
+    return switch (categoryId) {
+      'BanjoRollContent' => BanjoRollContent(
+        banjoRoll: switch (contentId) {
+          'forward' => BanjoRoll.forward,
+          'backward' => BanjoRoll.backward,
+          'alternatingThumb' => BanjoRoll.alternatingThumb,
+          'forwardBackward' => BanjoRoll.forwardBackward,
+          _ => throw ArgumentError(
+            '$contentId in $cacheId is not a banjo roll',
+          ),
+        },
+      ),
+      'GuitarStrumContent' => GuitarStrumContent(
+        guitarStrum: switch (contentId) {
+          'rem' => GuitarStrum.rem,
+          'beachBoys' => GuitarStrum.beachBoys,
+          'theBeatles' => GuitarStrum.theBeatles,
+          _ => throw ArgumentError(
+            '$contentId in $cacheId is not a guitar strum',
+          ),
+        },
+      ),
+      'SongContent' => SongContent(
+        instrument: switch (instrumentId) {
+          'Banjo' => Instrument.banjo,
+          'Guitar' => Instrument.guitar,
+          _ => throw ArgumentError(
+            '$instrumentId in $cacheId is not an instrument',
+          ),
+        },
+        song: contentId,
+      ),
+      'TechniqueContent' => TechniqueContent(
+        instrument: switch (instrumentId) {
+          'Banjo' => Instrument.banjo,
+          'Guitar' => Instrument.guitar,
+          _ => throw ArgumentError(
+            '$instrumentId in $cacheId is not an instrument',
+          ),
+        },
+        technique: switch (contentId) {
+          'hammerOn' => Technique.hammerOn,
+          'pullOff' => Technique.pullOff,
+          'slide' => Technique.slide,
+          _ => throw ArgumentError('$contentId in $cacheId is not a technique'),
+        },
+      ),
+      _ => throw ArgumentError('$categoryId in $cacheId is unknown'),
+    };
+  }
+
+  String cacheId() {
+    return '${instrument.label()}::${runtimeType.toString()}::${switch (this) {
+      (LoadingPlaceholder _) => throw ArgumentError('cache id for loading is not supported'),
+      (BanjoRollContent c) => c.banjoRoll.name,
+      (GuitarStrumContent c) => c.guitarStrum.name,
+      (SongContent c) => c.song,
+      (TechniqueContent c) => c.technique.name,
+    }}';
+  }
+
   String label();
+}
+
+class LoadingPlaceholder extends ContentType {
+  LoadingPlaceholder({required super.instrument})
+    : super(category: ContentCategory.loadingPlaceholder);
+
+  @override
+  String label() {
+    return '';
+  }
 }
 
 class BanjoRollContent extends ContentType {
@@ -128,11 +225,4 @@ class TechniqueContent extends ContentType {
 
   @override
   int get hashCode => instrument.hashCode ^ technique.hashCode;
-}
-
-Measure getPickingContent(Instrument instrument) {
-  final c = Note(2, 1, and: Note(4, 2, and: Note(5, 3)));
-  final g = Note(1, 3, and: Note(5, 2, and: Note(6, 3)));
-  final d = Note(1, 2, and: Note(2, 3, and: Note(3, 2)));
-  return Measure.fromNoteList([c, c, null, g, g, d, d, null]);
 }
