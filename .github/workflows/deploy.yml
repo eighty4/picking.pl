@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{ inputs.cloudflare_env }}
-      url: ${{ inputs.cloudflare_env == 'production' && 'https://picking.pl' || format('https://{0}.${{ secrets.CLOUDFLARE_PROJECT_NAME }}.dev', inputs.cloudflare_env) }}
+      url: ${{ inputs.cloudflare_env == 'production' && 'https://picking.pl' || format('https://{0}.{1}.pages.dev', inputs.cloudflare_env, vars.CLOUDFLARE_PROJECT_NAME) }}
     steps:
       - if: ${{ inputs.dev_build && inputs.release_version }}
         name: check inputs
@@ -71,5 +71,5 @@ jobs:
         with:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          command: pages deploy www --project-name ${{ secrets.CLOUDFLARE_PROJECT_NAME }} --branch "${{ inputs.cloudflare_env }}"
+          command: pages deploy www --project-name ${{ vars.CLOUDFLARE_PROJECT_NAME }} --branch "${{ inputs.cloudflare_env }}"
           wranglerVersion: latest
