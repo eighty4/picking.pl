@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pickin_playmate/content/content_catalog.dart';
 import 'package:pickin_playmate/content/content_repository.dart';
 import 'package:pickin_playmate/content/content_type.dart';
 

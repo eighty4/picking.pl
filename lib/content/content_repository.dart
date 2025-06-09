@@ -1,12 +1,6 @@
 import 'package:libtab/libtab.dart';
+import 'package:pickin_playmate/content/content_catalog.dart';
 import 'package:pickin_playmate/content/content_type.dart';
-
-class ContentCatalog {
-  final Map<ContentCategory, List<ContentType>> content;
-  final List<ContentCategory> practiceCategories;
-
-  ContentCatalog({required this.practiceCategories, required this.content});
-}
 
 class ContentRepository {
   Future<ContentCatalog> retrieveContentCatalog(Instrument instrument) async {
@@ -16,39 +10,23 @@ class ContentRepository {
     };
   }
 
-  Future<ContentCatalog> buildBanjoCatalog() async {
-    final practiceCategories = [
-      ContentCategory.banjoRolls,
-      ContentCategory.techniques,
-    ];
-    final Map<ContentCategory, List<ContentType>> content = {
-      ContentCategory.banjoRolls: BanjoRoll.values
+  Future<BanjoContentCatalog> buildBanjoCatalog() async {
+    return BanjoContentCatalog(
+      banjoRolls: BanjoRoll.values
           .map((banjoRoll) => BanjoRollContent(banjoRoll: banjoRoll))
           .toList(growable: false),
-      ContentCategory.songs: await collectSongContent(Instrument.banjo),
-      ContentCategory.techniques: collectTechniqueContent(Instrument.banjo),
-    };
-    return ContentCatalog(
-      practiceCategories: practiceCategories,
-      content: content,
+      songs: await collectSongContent(Instrument.banjo),
+      techniques: collectTechniqueContent(Instrument.banjo),
     );
   }
 
-  Future<ContentCatalog> buildGuitarCatalog() async {
-    final practiceCategories = [
-      ContentCategory.guitarStrums,
-      ContentCategory.techniques,
-    ];
-    final Map<ContentCategory, List<ContentType>> content = {
-      ContentCategory.guitarStrums: GuitarStrum.values
+  Future<GuitarContentCatalog> buildGuitarCatalog() async {
+    return GuitarContentCatalog(
+      guitarStrums: GuitarStrum.values
           .map((guitarStrum) => GuitarStrumContent(guitarStrum: guitarStrum))
           .toList(growable: false),
-      ContentCategory.songs: await collectSongContent(Instrument.guitar),
-      ContentCategory.techniques: collectTechniqueContent(Instrument.guitar),
-    };
-    return ContentCatalog(
-      practiceCategories: practiceCategories,
-      content: content,
+      songs: await collectSongContent(Instrument.guitar),
+      techniques: collectTechniqueContent(Instrument.guitar),
     );
   }
 

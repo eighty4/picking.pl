@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:libtab/instrument.dart';
 import 'package:pickin_playmate/content/catalog_lookup.dart';
+import 'package:pickin_playmate/content/content_catalog.dart';
 import 'package:pickin_playmate/content/content_repository.dart';
 import 'package:pickin_playmate/content/content_type.dart';
 import 'package:pickin_playmate/controls/toggle.dart';
@@ -256,17 +257,31 @@ class _ContentSelection extends StatelessWidget {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 22,
-            children: catalog.practiceCategories
-                .map(
-                  (category) => _ContentLinkList(
-                    category: category,
-                    current: current,
-                    focusNode: focusNode,
-                    onFocus: onFocus,
-                    options: catalog.content[category]!,
-                  ),
-                )
-                .toList(growable: false),
+            children: [
+              switch (catalog) {
+                (BanjoContentCatalog catalog) => _ContentLinkList(
+                  category: ContentCategory.banjoRolls,
+                  current: current,
+                  focusNode: focusNode,
+                  onFocus: onFocus,
+                  options: catalog.banjoRolls,
+                ),
+                (GuitarContentCatalog catalog) => _ContentLinkList(
+                  category: ContentCategory.guitarStrums,
+                  current: current,
+                  focusNode: focusNode,
+                  onFocus: onFocus,
+                  options: catalog.guitarStrums,
+                ),
+              },
+              _ContentLinkList(
+                category: ContentCategory.techniques,
+                current: current,
+                focusNode: focusNode,
+                onFocus: onFocus,
+                options: catalog.techniques,
+              ),
+            ],
           ),
         ),
         _ContentLinkList(

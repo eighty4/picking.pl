@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pickin_playmate/content/catalog_lookup.dart';
+import 'package:pickin_playmate/content/content_catalog.dart';
 import 'package:pickin_playmate/content/content_repository.dart';
 import 'package:pickin_playmate/content/content_type.dart';
 
@@ -75,9 +76,7 @@ class _ContentMenuListState extends State<_ContentMenuList> {
 
   updateState() {
     _focused = widget.currentContentType;
-    for (final content in widget.catalog.content[ContentCategory.songs]!) {
-      _focusNodes[content] = FocusNode();
-    }
+    widget.catalog.forEach((content) => _focusNodes[content] = FocusNode());
   }
 
   @override
@@ -96,20 +95,32 @@ class _ContentMenuListState extends State<_ContentMenuList> {
         padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          spacing: 2,
           children: [
+            ...switch (widget.catalog) {
+              (BanjoContentCatalog catalog) => [
+                buildListHeader('Banjo Rolls'),
+                SizedBox(height: 5),
+                ...catalog.banjoRolls.map(buildListItem),
+              ],
+              (GuitarContentCatalog catalog) => [
+                buildListHeader('Guitar Strums'),
+                SizedBox(height: 5),
+                ...catalog.guitarStrums.map(buildListItem),
+              ],
+            },
+            SizedBox(height: 10),
+            buildListHeader('Techniques'),
+            SizedBox(height: 5),
+            ...widget.catalog.techniques.map(buildListItem),
+            SizedBox(height: 10),
             buildListHeader('Songs'),
             SizedBox(height: 5),
-            ...buildSongList(),
+            ...widget.catalog.songs.map(buildListItem),
           ],
         ),
       ),
     );
-  }
-
-  List<Widget> buildSongList() {
-    return widget.catalog.content[ContentCategory.songs]!
-        .map(buildListItem)
-        .toList();
   }
 
   Widget buildListHeader(String label) {
