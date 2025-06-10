@@ -209,7 +209,7 @@ class _PickingLayoutState extends State<PickingLayout> {
     return Positioned(
       top: PickingInstrumentButton.size + menuPadding + headerPadding,
       left: -1,
-      bottom: menuPadding,
+      bottom: size.height > 500 ? menuPadding : 0,
       width: PickingSideMenu.width,
       child: PickingSideMenu(
         contentRepository: widget.contentRepository,

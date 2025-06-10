@@ -92,11 +92,10 @@ class _ContentMenuListState extends State<_ContentMenuList> {
     return FocusScope(
       autofocus: true,
       child: Padding(
-        padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 2,
+        padding: const EdgeInsets.only(left: 20),
+        child: ListView(
           children: [
+            SizedBox(height: 20),
             ...switch (widget.catalog) {
               (BanjoContentCatalog catalog) => [
                 buildListHeader('Banjo Rolls'),
@@ -117,6 +116,7 @@ class _ContentMenuListState extends State<_ContentMenuList> {
             buildListHeader('Songs'),
             SizedBox(height: 5),
             ...widget.catalog.songs.map(buildListItem),
+            SizedBox(height: 20),
           ],
         ),
       ),
