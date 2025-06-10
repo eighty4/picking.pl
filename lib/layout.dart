@@ -205,10 +205,11 @@ class _PickingLayoutState extends State<PickingLayout> {
   }
 
   Widget buildSideMenu(Size size) {
+    const double menuPadding = 10;
     return Positioned(
-      top: headerHeight + 20,
+      top: PickingInstrumentButton.size + menuPadding + headerPadding,
       left: -1,
-      bottom: controlsHeight + 20,
+      bottom: menuPadding,
       width: PickingSideMenu.width,
       child: PickingSideMenu(
         contentRepository: widget.contentRepository,
