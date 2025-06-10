@@ -7,6 +7,7 @@ import 'package:pickin_playmate/header.dart';
 import 'package:pickin_playmate/menu/fullscreen_menu.dart';
 import 'package:pickin_playmate/menu/side_menu.dart';
 import 'package:pickin_playmate/player.dart';
+import 'package:pickin_playmate/settings/settings_menu.dart';
 import 'package:pickin_playmate/widgets/controls.dart';
 import 'package:pickin_playmate/widgets/screen.dart';
 
@@ -52,9 +53,8 @@ class _PickingLayoutState extends State<PickingLayout> {
   static const headerPadding = PickingLayout.headerPadding;
 
   bool _isMenuOpen = false;
+  bool _isSettingsOpen = false;
   _InteractionMode mode = _InteractionMode.remoteControl;
-
-  closeMenu() => setState(() => _isMenuOpen = false);
 
   onContentSelection(ContentType contentType, {required bool closeMenu}) {
     widget.onContentSelection(contentType);
@@ -112,23 +112,26 @@ class _PickingLayoutState extends State<PickingLayout> {
     if (mode.isRemoteControl()) {
       return child;
     }
-    return switch (_isMenuOpen) {
-      true => MouseEnterRegion(
+    if (_isMenuOpen || _isSettingsOpen) {
+      return MouseEnterRegion(
         area: Rect.fromLTRB(
-          PickingSideMenu.width,
+          _isMenuOpen ? PickingSideMenu.width : 0,
           headerHeight,
-          size.width,
+          _isSettingsOpen
+              ? size.width - PickingSettingsMenu.width(size)
+              : size.width,
           size.height,
         ),
-        onEnter: closeMenu,
+        onEnter: () => setState(() => _isMenuOpen = _isSettingsOpen = false),
         child: child,
-      ),
-      false => MouseEnterRegion(
+      );
+    } else {
+      return MouseEnterRegion(
         area: Rect.fromLTRB(0, headerHeight * 2, size.width * .1, size.height),
-        child: child,
         onEnter: () => setState(() => _isMenuOpen = true),
-      ),
-    };
+        child: child,
+      );
+    }
   }
 
   buildLayoutStack(Size size) {
@@ -137,9 +140,12 @@ class _PickingLayoutState extends State<PickingLayout> {
         buildTitle(size),
         buildContent(size),
         buildControls(size),
-        if (_isMenuOpen && mode.isKeyboardMouse()) buildOverlay(size),
+        if (_isSettingsOpen || (_isMenuOpen && mode.isKeyboardMouse()))
+          buildOverlay(size),
         if (_isMenuOpen && mode.isKeyboardMouse()) buildSideMenu(size),
+        if (_isSettingsOpen) buildSettingsMenu(size),
         buildInstrumentToggle(size),
+        buildSettingsToggle(),
         if (_isMenuOpen && mode.isRemoteControl()) buildFullscreenMenu(size),
       ],
     );
@@ -166,6 +172,34 @@ class _PickingLayoutState extends State<PickingLayout> {
     );
   }
 
+  Widget buildSettingsToggle() {
+    return Positioned(
+      top: headerPadding + headerPadding,
+      right: headerPadding + headerPadding,
+      height: PickingSettingsButton.size,
+      width: PickingSettingsButton.size,
+      child: PickingSettingsButton(
+        isSettingsOpen: _isSettingsOpen,
+        onTap: () {
+          setState(() {
+            _isMenuOpen = false;
+            _isSettingsOpen = true;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget buildSettingsMenu(Size size) {
+    return Positioned(
+      top: 0,
+      right: 0,
+      height: size.height,
+      width: PickingSettingsMenu.width(size),
+      child: PickingSettingsMenu(),
+    );
+  }
+
   Widget buildContent(Size size) {
     return Positioned(
       top: headerHeight,
@@ -181,7 +215,7 @@ class _PickingLayoutState extends State<PickingLayout> {
 
   Widget buildControls(Size size) {
     return Positioned(
-      bottom: 0,
+      bottom: controlsHeight + 20,
       left: 0,
       width: size.width,
       height: controlsHeight,
@@ -198,7 +232,7 @@ class _PickingLayoutState extends State<PickingLayout> {
       child: PickingFullscreenMenu(
         contentRepository: widget.contentRepository,
         currentContentType: widget.contentType,
-        onClose: closeMenu,
+        onClose: () => setState(() => _isMenuOpen = false),
         onContentSelection: onContentSelection,
       ),
     );
@@ -208,7 +242,7 @@ class _PickingLayoutState extends State<PickingLayout> {
     return Positioned(
       top: headerHeight + 20,
       left: -1,
-      bottom: controlsHeight + 20,
+      bottom: 0,
       width: PickingSideMenu.width,
       child: PickingSideMenu(
         contentRepository: widget.contentRepository,

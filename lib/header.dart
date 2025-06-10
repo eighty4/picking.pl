@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:libtab/instrument.dart';
 import 'package:pickin_playmate/content/content_type.dart';
+import 'package:pickin_playmate/controls/toggle.dart';
+import 'package:pickin_playmate/widgets/hoverable.dart';
 import 'package:pickin_playmate/widgets/instrument_icon.dart';
 
 class PickingInstrumentButton extends StatefulWidget {
@@ -92,16 +94,39 @@ class _PickingPlayerTitleState extends State<PickingPlayerTitle> {
   }
 }
 
-class PickingSettingsButton extends StatefulWidget {
-  const PickingSettingsButton({super.key});
+class PickingSettingsButton extends StatelessWidget {
+  static const double size = 45;
 
-  @override
-  State<PickingSettingsButton> createState() => _PickingSettingsButtonState();
-}
+  final bool isSettingsOpen;
+  final VoidCallback onTap;
 
-class _PickingSettingsButtonState extends State<PickingSettingsButton> {
+  const PickingSettingsButton({
+    super.key,
+    required this.isSettingsOpen,
+    required this.onTap,
+  });
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return GestureDetector(
+      onTap: onTap,
+      child: Hoverable(
+        builder: (context, hovering) {
+          return Container(
+            width: size,
+            height: size,
+            padding: EdgeInsets.all(size * .1),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: hovering ? Colors.green : Colors.transparent,
+                width: 3,
+              ),
+              borderRadius: BorderRadius.circular(size * .1),
+            ),
+            child: isSettingsOpen ? ToggleIcons.next : ToggleIcons.settings,
+          );
+        },
+      ),
+    );
   }
 }
