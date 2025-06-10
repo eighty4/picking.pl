@@ -24,6 +24,7 @@ class _PickingPlaymateState extends State<PickingPlaymate> {
   Widget build(BuildContext context) {
     return MaterialApp(
       color: Color.fromARGB(255, 153, 35, 60),
+      debugShowCheckedModeBanner: false,
       home: PickingLaunch(
         builder: (context, launchData) => PickingDataCore(
           builder: (context, appData) => PickingLayout(
