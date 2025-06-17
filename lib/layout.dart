@@ -136,7 +136,7 @@ class _PickingLayoutState extends State<PickingLayout> {
       children: [
         buildTitle(size),
         buildContent(size),
-        buildControls(size),
+        // buildControls(size),
         if (_isMenuOpen && mode.isKeyboardMouse()) buildOverlay(size),
         if (_isMenuOpen && mode.isKeyboardMouse()) buildSideMenu(size),
         buildInstrumentToggle(size),
