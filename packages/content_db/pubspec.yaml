@@ -1,0 +1,35 @@
+name: content_db
+version: 0.0.1
+publish_to: none
+environment:
+  sdk: ^3.8.1
+  flutter: ">=1.17.0"
+resolution: workspace
+dependencies:
+  flutter:
+    sdk: flutter
+  db_api:
+    path: ../db_api
+  db_indexeddb:
+    path: ../db_indexeddb
+  db_sqlite:
+    path: ../db_sqlite
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+flutter:
+  plugin:
+    platforms:
+      android:
+        default_package: db_sqlite
+      ios:
+        default_package: db_sqlite
+#      linux:
+#        default_package: db_desktop
+      macos:
+        default_package: db_sqlite
+#      windows:
+#        default_package: db_desktop
+      web:
+        default_package: db_indexeddb

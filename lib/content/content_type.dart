@@ -50,8 +50,9 @@ sealed class ContentType {
   factory ContentType.initial(Instrument instrument) {
     return switch (instrument) {
       Instrument.banjo => BanjoRollContent(banjoRoll: BanjoRoll.forward),
-      Instrument.guitar => GuitarStrumContent(
-        guitarStrum: GuitarStrum.beachBoys,
+      Instrument.guitar => TechniqueContent(
+        instrument: instrument,
+        technique: Technique.hammerOn,
       ),
     };
   }

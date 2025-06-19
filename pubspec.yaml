@@ -6,7 +6,15 @@ version: 1.0.0+1
 environment:
   sdk: ^3.8.0
 
+workspace:
+  - packages/content_db
+  - packages/db_api
+  - packages/db_indexeddb
+  - packages/db_sqlite
+
 dependencies:
+  content_db:
+    path: packages/content_db
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.17

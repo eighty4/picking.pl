@@ -31,7 +31,9 @@ class _PickingPlayerState extends State<PickingPlayer> {
   @override
   void didUpdateWidget(PickingPlayer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    retrieveContent();
+    if (widget.contentType != oldWidget.contentType) {
+      retrieveContent();
+    }
   }
 
   retrieveContent() {

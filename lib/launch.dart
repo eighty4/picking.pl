@@ -35,7 +35,7 @@ class _PickingLaunchState extends State<PickingLaunch> {
     final returnUser = contentType != null;
     return PickingLaunchData(
       cache: cache,
-      contentRepository: ContentRepository(),
+      contentRepository: ContentRepository.create(),
       currentContentType: contentType ?? ContentType.initial(Instrument.banjo),
       returnUser: returnUser,
     );

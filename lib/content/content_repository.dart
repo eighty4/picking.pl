@@ -1,8 +1,33 @@
 import 'package:libtab/libtab.dart';
 import 'package:pickin_playmate/content/content_catalog.dart';
+import 'package:pickin_playmate/content/content_source.dart';
 import 'package:pickin_playmate/content/content_type.dart';
 
 class ContentRepository {
+  final Map<(Instrument, ContentCategory), ContentSource> contentSources;
+
+  ContentRepository({required this.contentSources});
+
+  factory ContentRepository.create({Iterable<ContentSource>? contentSources}) {
+    if (contentSources == null) {
+      return ContentRepository.create(
+        contentSources: [
+          BanjoRollSource(),
+          BanjoTechniqueSource(),
+          GuitarStrumSource(),
+          GuitarTechniqueSource(),
+        ],
+      );
+    } else {
+      return ContentRepository(
+        contentSources: Map.fromIterable(
+          contentSources,
+          key: (source) => (source.instrument, source.category),
+        ),
+      );
+    }
+  }
+
   Future<ContentCatalog> retrieveContentCatalog(Instrument instrument) async {
     return switch (instrument) {
       Instrument.banjo => buildBanjoCatalog(),
@@ -55,22 +80,8 @@ class ContentRepository {
   }
 
   Future<Measure> retrieveContent(ContentType contentType) async {
-    if (contentType.instrument == Instrument.banjo) {
-      return Measure.fromNoteList([
-        Note(3, 0),
-        Note(2, 2),
-        Note(1, 0),
-        Note(3, 0),
-        Note(2, 2),
-        Note(1, 0),
-        Note(3, 0),
-        Note(2, 2),
-      ]);
-    } else {
-      final c = Note(2, 1, and: Note(4, 2, and: Note(5, 3)));
-      final g = Note(1, 3, and: Note(5, 2, and: Note(6, 3)));
-      final d = Note(1, 2, and: Note(2, 3, and: Note(3, 2)));
-      return Measure.fromNoteList([c, c, null, g, g, d, d, null]);
-    }
+    print('asdf');
+    return await contentSources[(contentType.instrument, contentType.category)]!
+        .retrieve(contentType);
   }
 }
