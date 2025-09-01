@@ -150,7 +150,7 @@ packages:
       path: "../libtab"
       relative: true
     source: path
-    version: "0.0.12"
+    version: "0.0.13"
   lints:
     dependency: transitive
     description:
@@ -430,4 +430,4 @@ packages:
     version: "6.5.0"
 sdks:
   dart: ">=3.8.0 <4.0.0"
-  flutter: ">=3.27.0"
+  flutter: ">=3.32.0"

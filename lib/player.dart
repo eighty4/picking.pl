@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:libtab/libtab.dart';
 import 'package:pickin_playmate/content/content_repository.dart';
 import 'package:pickin_playmate/content/content_type.dart';
@@ -20,7 +21,7 @@ class PickingPlayer extends StatefulWidget {
 }
 
 class _PickingPlayerState extends State<PickingPlayer> {
-  late Future<Measure> _measure;
+  late Future<List<Measure>> _measures;
 
   @override
   void initState() {
@@ -36,23 +37,31 @@ class _PickingPlayerState extends State<PickingPlayer> {
 
   retrieveContent() {
     setState(() {
-      _measure = widget.contentRepository.retrieveContent(widget.contentType);
+      _measures = widget.contentRepository.retrieveContent(widget.contentType);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: _measure,
+      future: _measures,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           throw snapshot.error!;
         } else if (snapshot.hasData) {
-          return _PickingPlayerInterface(
-            contentType: widget.contentType,
-            measure: snapshot.data!,
-            size: measureSize(context),
-          );
+          if (snapshot.connectionState == ConnectionState.done) {
+            return _PickingPlayerInterface(
+              contentType: widget.contentType,
+              measures: snapshot.data!,
+              size: measureSize(context),
+            );
+          } else {
+            return _PickingPlayerInterface(
+              contentType: widget.contentType,
+              measures: [],
+              size: measureSize(context),
+            );
+          }
         } else {
           return SizedBox.shrink();
         }
@@ -70,12 +79,12 @@ class _PickingPlayerState extends State<PickingPlayer> {
 
 class _PickingPlayerInterface extends StatefulWidget {
   final ContentType contentType;
-  final Measure measure;
+  final List<Measure> measures;
   final Size size;
 
   const _PickingPlayerInterface({
     required this.contentType,
-    required this.measure,
+    required this.measures,
     required this.size,
   });
 
@@ -85,14 +94,42 @@ class _PickingPlayerInterface extends StatefulWidget {
 }
 
 class _PickingPlayerInterfaceState extends State<_PickingPlayerInterface> {
+  int measure = 0;
+
+  @override
+  void didUpdateWidget(_PickingPlayerInterface oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.contentType != oldWidget.contentType) {
+      setState(() => measure = 0);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: MeasureDisplay(
-        widget.measure,
-        instrument: widget.contentType.instrument,
-        tabContext: TabContext.forBrightness(Brightness.light),
-        size: widget.size,
+    return CallbackShortcuts(
+      bindings: {
+        SingleActivator(LogicalKeyboardKey.arrowLeft): () {
+          setState(() => measure = max(0, measure - 1));
+        },
+        SingleActivator(LogicalKeyboardKey.arrowRight): () {
+          setState(
+            () => measure = min(widget.measures.length - 1, measure + 1),
+          );
+        },
+      },
+      child: Focus(
+        autofocus: true,
+        child: Center(
+          child: MeasureDisplay(
+            widget.measures.isNotEmpty
+                ? widget.measures[measure]
+                : Measure.fromNoteList([]),
+            // label: (measure + 1).toString(),
+            instrument: widget.contentType.instrument,
+            tabContext: TabContext.forBrightness(Brightness.light),
+            size: widget.size,
+          ),
+        ),
       ),
     );
   }

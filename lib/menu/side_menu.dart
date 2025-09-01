@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pickin_playmate/content/catalog_lookup.dart';
 import 'package:pickin_playmate/content/content_catalog.dart';
-import 'package:pickin_playmate/content/content_repository.dart';
 import 'package:pickin_playmate/content/content_type.dart';
 
 class PickingSideMenu extends StatelessWidget {
   static const double width = 400;
 
-  final ContentRepository contentRepository;
+  final ContentCatalogIndex catalogIndex;
   final ContentType currentContentType;
   final Function(ContentType contentType, {required bool closeMenu})
   onContentSelection;
 
   const PickingSideMenu({
     super.key,
-    required this.contentRepository,
+    required this.catalogIndex,
     required this.currentContentType,
     required this.onContentSelection,
   });
@@ -28,7 +27,7 @@ class PickingSideMenu extends StatelessWidget {
         color: Colors.deepOrangeAccent,
       ),
       child: ContentCatalogLookup(
-        contentRepository: contentRepository,
+        catalogIndex: catalogIndex,
         contentType: currentContentType,
         builder: (context, catalog) {
           return _ContentMenuList(

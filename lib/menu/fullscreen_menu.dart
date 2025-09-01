@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:libtab/instrument.dart';
 import 'package:pickin_playmate/content/catalog_lookup.dart';
 import 'package:pickin_playmate/content/content_catalog.dart';
-import 'package:pickin_playmate/content/content_repository.dart';
 import 'package:pickin_playmate/content/content_type.dart';
 import 'package:pickin_playmate/controls/toggle.dart';
 import 'package:pickin_playmate/menu/instrument_select.dart';
@@ -24,7 +23,7 @@ class _InstrumentSelection extends _PickingMenuSelection {
 }
 
 class PickingFullscreenMenu extends StatefulWidget {
-  final ContentRepository contentRepository;
+  final ContentCatalogIndex catalogIndex;
   final ContentType currentContentType;
   final VoidCallback onClose;
   final Function(ContentType contentType, {required bool closeMenu})
@@ -32,7 +31,7 @@ class PickingFullscreenMenu extends StatefulWidget {
 
   const PickingFullscreenMenu({
     super.key,
-    required this.contentRepository,
+    required this.catalogIndex,
     required this.currentContentType,
     required this.onClose,
     required this.onContentSelection,
@@ -106,7 +105,7 @@ class _PickingFullscreenMenuState extends State<PickingFullscreenMenu> {
                   ),
                 ),
                 ContentCatalogLookup(
-                  contentRepository: widget.contentRepository,
+                  catalogIndex: widget.catalogIndex,
                   contentType: widget.currentContentType,
                   builder: (context, catalog) {
                     return _ContentSelection(

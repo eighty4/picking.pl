@@ -28,6 +28,7 @@ class _PickingPlaymateState extends State<PickingPlaymate> {
       home: PickingLaunch(
         builder: (context, launchData) => PickingDataCore(
           builder: (context, appData) => PickingLayout(
+            catalogIndex: appData.catalogIndex,
             contentRepository: appData.contentRepository,
             contentType: appData.contentType,
             onContentSelection: appData.onContentSelection,

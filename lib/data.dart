@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:libtab/instrument.dart';
+import 'package:pickin_playmate/content/content_catalog.dart';
 import 'package:pickin_playmate/content/content_repository.dart';
 import 'package:pickin_playmate/content/content_type.dart';
 import 'package:pickin_playmate/launch.dart';
@@ -56,6 +57,7 @@ class PickingDataCache {
 }
 
 class PickingAppData {
+  final ContentCatalogIndex catalogIndex;
   final ContentRepository contentRepository;
   final ContentType contentType;
   final Function(ContentType contentType) onContentSelection;
@@ -63,6 +65,7 @@ class PickingAppData {
   final bool returnUser;
 
   PickingAppData({
+    required this.catalogIndex,
     required this.contentRepository,
     required this.contentType,
     required this.onContentSelection,
@@ -118,6 +121,7 @@ class _PickingDataCoreState extends State<PickingDataCore> {
     return widget.builder(
       context,
       PickingAppData(
+        catalogIndex: widget.launchData.catalogIndex,
         contentRepository: widget.launchData.contentRepository,
         contentType: contentType,
         onContentSelection: onContentSelection,

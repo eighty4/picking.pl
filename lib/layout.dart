@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:libtab/instrument.dart';
+import 'package:pickin_playmate/content/content_catalog.dart';
 import 'package:pickin_playmate/content/content_repository.dart';
 import 'package:pickin_playmate/content/content_type.dart';
 import 'package:pickin_playmate/header.dart';
@@ -29,6 +30,7 @@ class PickingLayout extends StatefulWidget {
   static const double headerHeight = 80;
   static const double headerPadding = 10;
 
+  final ContentCatalogIndex catalogIndex;
   final ContentRepository contentRepository;
   final ContentType contentType;
   final Function(ContentType contentType) onContentSelection;
@@ -36,6 +38,7 @@ class PickingLayout extends StatefulWidget {
 
   const PickingLayout({
     super.key,
+    required this.catalogIndex,
     required this.contentRepository,
     required this.contentType,
     required this.onContentSelection,
@@ -196,7 +199,7 @@ class _PickingLayoutState extends State<PickingLayout> {
       width: size.width,
       height: size.height,
       child: PickingFullscreenMenu(
-        contentRepository: widget.contentRepository,
+        catalogIndex: widget.catalogIndex,
         currentContentType: widget.contentType,
         onClose: closeMenu,
         onContentSelection: onContentSelection,
@@ -212,7 +215,7 @@ class _PickingLayoutState extends State<PickingLayout> {
       bottom: size.height > 500 ? menuPadding : 0,
       width: PickingSideMenu.width,
       child: PickingSideMenu(
-        contentRepository: widget.contentRepository,
+        catalogIndex: widget.catalogIndex,
         currentContentType: widget.contentType,
         onContentSelection: onContentSelection,
       ),

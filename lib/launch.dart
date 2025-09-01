@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:libtab/instrument.dart';
+import 'package:pickin_playmate/content/content_catalog.dart';
 import 'package:pickin_playmate/content/content_repository.dart';
+import 'package:pickin_playmate/content/content_sources.dart';
 import 'package:pickin_playmate/content/content_type.dart';
+import 'package:pickin_playmate/content/songs/song_content.dart';
 import 'package:pickin_playmate/data.dart';
 
 class PickingLaunchData {
   final PickingDataCache cache;
+  final ContentCatalogIndex catalogIndex;
   final ContentRepository contentRepository;
   final ContentType currentContentType;
   final bool returnUser;
 
   PickingLaunchData({
     required this.cache,
+    required this.catalogIndex,
     required this.contentRepository,
     required this.currentContentType,
     required this.returnUser,
@@ -33,9 +38,13 @@ class _PickingLaunchState extends State<PickingLaunch> {
     final cache = PickingDataCache();
     final contentType = await cache.loadContentType();
     final returnUser = contentType != null;
+    final contentCollection = SourcedContentCollection.loadFrom(
+      sources: [InitialBanjoSongs(), InitialGuitarSongs()],
+    );
     return PickingLaunchData(
       cache: cache,
-      contentRepository: ContentRepository(),
+      catalogIndex: ContentCatalogIndex(collection: contentCollection),
+      contentRepository: ContentRepository(collection: contentCollection),
       currentContentType: contentType ?? ContentType.initial(Instrument.banjo),
       returnUser: returnUser,
     );
