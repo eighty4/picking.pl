@@ -65,7 +65,7 @@ sealed class ContentType {
     final categoryId = parts[1];
     final contentId = parts[2];
     return switch (categoryId) {
-      'BanjoRollContent' => BanjoRollContent(
+      'banjoRolls' => BanjoRollContent(
         banjoRoll: switch (contentId) {
           'forward' => BanjoRoll.forward,
           'backward' => BanjoRoll.backward,
@@ -76,7 +76,7 @@ sealed class ContentType {
           ),
         },
       ),
-      'GuitarStrumContent' => GuitarStrumContent(
+      'guitarStrums' => GuitarStrumContent(
         guitarStrum: switch (contentId) {
           'rem' => GuitarStrum.rem,
           'beachBoys' => GuitarStrum.beachBoys,
@@ -86,7 +86,7 @@ sealed class ContentType {
           ),
         },
       ),
-      'SongContent' => SongContent(
+      'songs' => SongContent(
         instrument: switch (instrumentId) {
           'Banjo' => Instrument.banjo,
           'Guitar' => Instrument.guitar,
@@ -96,7 +96,7 @@ sealed class ContentType {
         },
         song: contentId,
       ),
-      'TechniqueContent' => TechniqueContent(
+      'techniques' => TechniqueContent(
         instrument: switch (instrumentId) {
           'Banjo' => Instrument.banjo,
           'Guitar' => Instrument.guitar,
@@ -116,7 +116,7 @@ sealed class ContentType {
   }
 
   String cacheId() {
-    return '${instrument.label()}::${runtimeType.toString()}::${switch (this) {
+    return '${instrument.label()}::${category.name}::${switch (this) {
       (LoadingPlaceholder _) => throw ArgumentError('cache id for loading is not supported'),
       (BanjoRollContent c) => c.banjoRoll.name,
       (GuitarStrumContent c) => c.guitarStrum.name,

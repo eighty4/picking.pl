@@ -6,116 +6,116 @@ main() {
   testWidgets('ContentType.cacheId()', (_) async {
     expect(
       BanjoRollContent(banjoRoll: BanjoRoll.backward).cacheId(),
-      equals('Banjo::BanjoRollContent::backward'),
+      equals('Banjo::banjoRolls::backward'),
     );
     expect(
       BanjoRollContent(banjoRoll: BanjoRoll.forward).cacheId(),
-      equals('Banjo::BanjoRollContent::forward'),
+      equals('Banjo::banjoRolls::forward'),
     );
     expect(
       BanjoRollContent(banjoRoll: BanjoRoll.alternatingThumb).cacheId(),
-      equals('Banjo::BanjoRollContent::alternatingThumb'),
+      equals('Banjo::banjoRolls::alternatingThumb'),
     );
     expect(
       BanjoRollContent(banjoRoll: BanjoRoll.forwardBackward).cacheId(),
-      equals('Banjo::BanjoRollContent::forwardBackward'),
+      equals('Banjo::banjoRolls::forwardBackward'),
     );
     expect(
       GuitarStrumContent(guitarStrum: GuitarStrum.rem).cacheId(),
-      equals('Guitar::GuitarStrumContent::rem'),
+      equals('Guitar::guitarStrums::rem'),
     );
     expect(
       SongContent(
         instrument: Instrument.banjo,
         song: 'Wayfaring Stranger',
       ).cacheId(),
-      equals('Banjo::SongContent::Wayfaring Stranger'),
+      equals('Banjo::songs::Wayfaring Stranger'),
     );
     expect(
       SongContent(
         instrument: Instrument.guitar,
         song: 'Wayfaring Stranger',
       ).cacheId(),
-      equals('Guitar::SongContent::Wayfaring Stranger'),
+      equals('Guitar::songs::Wayfaring Stranger'),
     );
     expect(
       TechniqueContent(
         instrument: Instrument.banjo,
         technique: Technique.hammerOn,
       ).cacheId(),
-      equals('Banjo::TechniqueContent::hammerOn'),
+      equals('Banjo::techniques::hammerOn'),
     );
     expect(
       TechniqueContent(
         instrument: Instrument.banjo,
         technique: Technique.pullOff,
       ).cacheId(),
-      equals('Banjo::TechniqueContent::pullOff'),
+      equals('Banjo::techniques::pullOff'),
     );
     expect(
       TechniqueContent(
         instrument: Instrument.banjo,
         technique: Technique.slide,
       ).cacheId(),
-      equals('Banjo::TechniqueContent::slide'),
+      equals('Banjo::techniques::slide'),
     );
     expect(
       TechniqueContent(
         instrument: Instrument.guitar,
         technique: Technique.hammerOn,
       ).cacheId(),
-      equals('Guitar::TechniqueContent::hammerOn'),
+      equals('Guitar::techniques::hammerOn'),
     );
     expect(
       TechniqueContent(
         instrument: Instrument.guitar,
         technique: Technique.pullOff,
       ).cacheId(),
-      equals('Guitar::TechniqueContent::pullOff'),
+      equals('Guitar::techniques::pullOff'),
     );
     expect(
       TechniqueContent(
         instrument: Instrument.guitar,
         technique: Technique.slide,
       ).cacheId(),
-      equals('Guitar::TechniqueContent::slide'),
+      equals('Guitar::techniques::slide'),
     );
   });
   testWidgets('ContentType.fromCacheId()', (_) async {
     expect(
-      ContentType.fromCacheId('Banjo::BanjoRollContent::backward'),
+      ContentType.fromCacheId('Banjo::banjoRolls::backward'),
       equals(BanjoRollContent(banjoRoll: BanjoRoll.backward)),
     );
     expect(
-      ContentType.fromCacheId('Banjo::BanjoRollContent::forward'),
+      ContentType.fromCacheId('Banjo::banjoRolls::forward'),
       equals(BanjoRollContent(banjoRoll: BanjoRoll.forward)),
     );
     expect(
-      ContentType.fromCacheId('Banjo::BanjoRollContent::alternatingThumb'),
+      ContentType.fromCacheId('Banjo::banjoRolls::alternatingThumb'),
       equals(BanjoRollContent(banjoRoll: BanjoRoll.alternatingThumb)),
     );
     expect(
-      ContentType.fromCacheId('Banjo::BanjoRollContent::forwardBackward'),
+      ContentType.fromCacheId('Banjo::banjoRolls::forwardBackward'),
       equals(BanjoRollContent(banjoRoll: BanjoRoll.forwardBackward)),
     );
     expect(
-      ContentType.fromCacheId('Guitar::GuitarStrumContent::rem'),
+      ContentType.fromCacheId('Guitar::guitarStrums::rem'),
       equals(GuitarStrumContent(guitarStrum: GuitarStrum.rem)),
     );
     expect(
-      ContentType.fromCacheId('Banjo::SongContent::Wayfaring Stranger'),
+      ContentType.fromCacheId('Banjo::songs::Wayfaring Stranger'),
       equals(
         SongContent(instrument: Instrument.banjo, song: 'Wayfaring Stranger'),
       ),
     );
     expect(
-      ContentType.fromCacheId('Guitar::SongContent::Wayfaring Stranger'),
+      ContentType.fromCacheId('Guitar::songs::Wayfaring Stranger'),
       equals(
         SongContent(instrument: Instrument.guitar, song: 'Wayfaring Stranger'),
       ),
     );
     expect(
-      ContentType.fromCacheId('Banjo::TechniqueContent::hammerOn'),
+      ContentType.fromCacheId('Banjo::techniques::hammerOn'),
       equals(
         TechniqueContent(
           instrument: Instrument.banjo,
@@ -124,7 +124,7 @@ main() {
       ),
     );
     expect(
-      ContentType.fromCacheId('Banjo::TechniqueContent::pullOff'),
+      ContentType.fromCacheId('Banjo::techniques::pullOff'),
       equals(
         TechniqueContent(
           instrument: Instrument.banjo,
@@ -133,7 +133,7 @@ main() {
       ),
     );
     expect(
-      ContentType.fromCacheId('Banjo::TechniqueContent::slide'),
+      ContentType.fromCacheId('Banjo::techniques::slide'),
       equals(
         TechniqueContent(
           instrument: Instrument.banjo,
@@ -142,7 +142,7 @@ main() {
       ),
     );
     expect(
-      ContentType.fromCacheId('Guitar::TechniqueContent::hammerOn'),
+      ContentType.fromCacheId('Guitar::techniques::hammerOn'),
       equals(
         TechniqueContent(
           instrument: Instrument.guitar,
@@ -151,7 +151,7 @@ main() {
       ),
     );
     expect(
-      ContentType.fromCacheId('Guitar::TechniqueContent::pullOff'),
+      ContentType.fromCacheId('Guitar::techniques::pullOff'),
       equals(
         TechniqueContent(
           instrument: Instrument.guitar,
@@ -160,7 +160,7 @@ main() {
       ),
     );
     expect(
-      ContentType.fromCacheId('Guitar::TechniqueContent::slide'),
+      ContentType.fromCacheId('Guitar::techniques::slide'),
       equals(
         TechniqueContent(
           instrument: Instrument.guitar,
