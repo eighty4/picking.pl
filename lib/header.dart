@@ -26,7 +26,7 @@ class _PickingInstrumentButtonState extends State<PickingInstrumentButton> {
 
   set hovering(bool v) => setState(() => _hovering = v);
 
-  onTap() {
+  void onTap() {
     setState(() => _clicked = true);
     Future.delayed(Duration(milliseconds: 140)).then((_) {
       setState(() => _clicked = false);

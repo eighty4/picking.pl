@@ -73,7 +73,7 @@ class _ContentMenuListState extends State<_ContentMenuList> {
     updateState();
   }
 
-  updateState() {
+  void updateState() {
     _focused = widget.currentContentType;
     widget.catalog.forEach((content) => _focusNodes[content] = FocusNode());
   }

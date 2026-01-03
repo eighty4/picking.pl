@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:libtab/libtab.dart';
 import 'package:pickin_playmate/content/content_type.dart';
 
-main() {
+void main() {
   testWidgets('ContentType.cacheId()', (_) async {
     expect(
       BanjoRollContent(banjoRoll: BanjoRoll.backward).cacheId(),

@@ -6,7 +6,7 @@ import 'package:pickin_playmate/main.dart';
 
 const isCI = bool.fromEnvironment('CI', defaultValue: false);
 
-main() {
+void main() {
   testWidgets('PickingPlaymate', (tester) async {
     await tester.binding.setSurfaceSize(Size(1200, 800));
     await tester.pumpWidget(PickingPlaymate());

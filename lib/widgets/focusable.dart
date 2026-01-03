@@ -35,7 +35,7 @@ class _FocusableState extends State<Focusable> {
     );
   }
 
-  onFocusChange(bool focused) {
+  void onFocusChange(bool focused) {
     setState(() => this.focused = focused);
     if (widget.onFocusChange != null) {
       widget.onFocusChange!(focused);

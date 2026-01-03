@@ -60,7 +60,7 @@ class _InstrumentSelectState extends State<InstrumentSelect> {
     );
   }
 
-  onSelect(instrument) {
+  void onSelect(Instrument instrument) {
     active = false;
     widget.onSelection(instrument);
   }

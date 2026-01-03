@@ -35,7 +35,7 @@ class _PickingPlayerState extends State<PickingPlayer> {
     retrieveContent();
   }
 
-  retrieveContent() {
+  void retrieveContent() {
     setState(() {
       _measures = widget.contentRepository.retrieveContent(widget.contentType);
     });

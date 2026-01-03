@@ -35,7 +35,7 @@ class _ContentCatalogLookupState extends State<ContentCatalogLookup> {
     }
   }
 
-  updateCatalog() {
+  void updateCatalog() {
     _catalog = widget.catalogIndex.retrieve(widget.contentType.instrument);
   }
 

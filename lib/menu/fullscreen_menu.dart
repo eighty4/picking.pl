@@ -136,14 +136,14 @@ class _PickingFullscreenMenuState extends State<PickingFullscreenMenu> {
         },
   };
 
-  changeContentType(ContentType contentType) {
+  void changeContentType(ContentType contentType) {
     if (kDebugMode) {
       print('_PickingMenuState.changeContentType($contentType)');
     }
     menuSelection = _ContentTypeSelection(contentType);
   }
 
-  changeInstrument(Instrument instrument) {
+  void changeInstrument(Instrument instrument) {
     if (kDebugMode) {
       print('_PickingMenuState.changeInstrument($instrument)');
     }
@@ -240,7 +240,7 @@ class _ContentSelection extends StatelessWidget {
     required this.onSelectionFocus,
   });
 
-  onFocus(ContentType focused) {
+  void onFocus(ContentType focused) {
     onSelectionFocus(focused);
   }
 

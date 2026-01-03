@@ -13,7 +13,7 @@ class ContentCatalogIndex {
     _songsLoading.then(_setSongs);
   }
 
-  _setSongs(List<SongContent> songs) {
+  void _setSongs(List<SongContent> songs) {
     for (final song in songs) {
       (switch (song.instrument) {
         Instrument.banjo => _banjoSongs,
@@ -73,7 +73,7 @@ sealed class ContentCatalog {
 
   ContentCatalog({required this.songs, required this.techniques});
 
-  forEach(Function(ContentType) action) {
+  void forEach(Function(ContentType) action) {
     (switch (this) {
       (BanjoContentCatalog c) => c.banjoRolls,
       (GuitarContentCatalog c) => c.guitarStrums,

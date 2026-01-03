@@ -7,27 +7,35 @@ environment:
   sdk: ^3.8.0
 
 dependencies:
+  cupertino_icons: ^1.0.8
   flutter:
     sdk: flutter
-  flutter_svg: ^2.0.17
+  flutter_svg: ^2.2.3
   libtab:
     path: ../libtab
-  shared_preferences: ^2.5.2
+  shared_preferences: ^2.5.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 flutter:
   assets:
+    - assets/icons/check.svg
     - assets/icons/chevron_left.svg
     - assets/icons/chevron_right.svg
     - assets/icons/cog.svg
     - assets/icons/cross.svg
+    - assets/icons/dots.svg
+    - assets/icons/github.svg
+    - assets/icons/link.svg
+    - assets/icons/moon.svg
     - assets/icons/pause.svg
+    - assets/icons/pencil.svg
     - assets/icons/play.svg
     - assets/icons/resume.svg
+    - assets/icons/sun.svg
     - assets/instruments/Banjo.svg
     - assets/instruments/Guitar.svg
   fonts:
@@ -36,3 +44,4 @@ flutter:
         - asset: assets/fonts/Raleway-Variable.ttf
         - asset: assets/fonts/Raleway-Italic-Variable.ttf
           style: italic
+  uses-material-design: true

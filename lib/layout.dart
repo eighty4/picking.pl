@@ -57,16 +57,16 @@ class _PickingLayoutState extends State<PickingLayout> {
   bool _isMenuOpen = false;
   _InteractionMode mode = _InteractionMode.remoteControl;
 
-  closeMenu() => setState(() => _isMenuOpen = false);
+  void closeMenu() => setState(() => _isMenuOpen = false);
 
-  onContentSelection(ContentType contentType, {required bool closeMenu}) {
+  void onContentSelection(ContentType contentType, {required bool closeMenu}) {
     widget.onContentSelection(contentType);
     if (closeMenu) {
       setState(() => _isMenuOpen = false);
     }
   }
 
-  toggleInstrument() {
+  void toggleInstrument() {
     widget.onInstrumentSelection(switch (widget.contentType.instrument) {
       Instrument.banjo => Instrument.guitar,
       Instrument.guitar => Instrument.banjo,
@@ -134,7 +134,7 @@ class _PickingLayoutState extends State<PickingLayout> {
     };
   }
 
-  buildLayoutStack(Size size) {
+  Stack buildLayoutStack(Size size) {
     return Stack(
       children: [
         buildTitle(size),
@@ -254,7 +254,7 @@ class MouseEnterRegion extends StatefulWidget {
 class _MouseEnterRegionState extends State<MouseEnterRegion> {
   bool _hovering = false;
 
-  onHover(e) {
+  void onHover(PointerHoverEvent e) {
     if (widget.area.contains(e.position)) {
       if (!_hovering) {
         _hovering = true;

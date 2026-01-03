@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// PickingDataCache syncs content info with the platform's cache storage.
 class PickingDataCache {
-  static _cacheOptions() {
+  static SharedPreferencesWithCacheOptions _cacheOptions() {
     return SharedPreferencesWithCacheOptions(
       allowList: {
         'ppl.content',
@@ -19,7 +19,7 @@ class PickingDataCache {
     );
   }
 
-  static clear() async {
+  static Future<void> clear() async {
     await SharedPreferencesAsync().clear();
   }
 
@@ -42,7 +42,7 @@ class PickingDataCache {
     }
   }
 
-  saveContentType(ContentType contentType) {
+  void saveContentType(ContentType contentType) {
     final cacheId = contentType.cacheId();
     _cache.then((cache) {
       try {
@@ -97,14 +97,14 @@ class _PickingDataCoreState extends State<PickingDataCore> {
     contentType = widget.launchData.currentContentType;
   }
 
-  onContentSelection(ContentType contentType, {bool cache = true}) {
+  void onContentSelection(ContentType contentType, {bool cache = true}) {
     setState(() => this.contentType = contentType);
     if (cache && contentType.category != ContentCategory.loadingPlaceholder) {
       widget.cache.saveContentType(contentType);
     }
   }
 
-  onInstrumentSelection(Instrument instrument) {
+  void onInstrumentSelection(Instrument instrument) {
     onContentSelection(LoadingPlaceholder(instrument: instrument));
     widget.cache
         .loadContentType(instrument: instrument)
