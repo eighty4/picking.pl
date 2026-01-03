@@ -22,6 +22,7 @@ class PickingPlayer extends StatefulWidget {
 
 class _PickingPlayerState extends State<PickingPlayer> {
   late Future<List<Measure>> _measures;
+  List<Measure>? _previous;
 
   @override
   void initState() {
@@ -32,6 +33,9 @@ class _PickingPlayerState extends State<PickingPlayer> {
   @override
   void didUpdateWidget(PickingPlayer oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (widget.contentType.instrument != oldWidget.contentType.instrument) {
+      _previous = null;
+    }
     retrieveContent();
   }
 
@@ -39,6 +43,7 @@ class _PickingPlayerState extends State<PickingPlayer> {
     setState(() {
       _measures = widget.contentRepository.retrieveContent(widget.contentType);
     });
+    _measures.then((measures) => _previous = measures);
   }
 
   @override
@@ -48,22 +53,14 @@ class _PickingPlayerState extends State<PickingPlayer> {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           throw snapshot.error!;
-        } else if (snapshot.hasData) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return _PickingPlayerInterface(
-              contentType: widget.contentType,
-              measures: snapshot.data!,
-              size: measureSize(context),
-            );
-          } else {
-            return _PickingPlayerInterface(
-              contentType: widget.contentType,
-              measures: [],
-              size: measureSize(context),
-            );
-          }
         } else {
-          return SizedBox.shrink();
+          return _PickingPlayerInterface(
+            contentType: widget.contentType,
+            measures: snapshot.connectionState == ConnectionState.done
+                ? snapshot.data!
+                : _previous ?? [],
+            size: measureSize(context),
+          );
         }
       },
     );
