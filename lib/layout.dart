@@ -35,6 +35,7 @@ class PickingLayout extends StatefulWidget {
   final ContentType contentType;
   final Function(ContentType contentType) onContentSelection;
   final Function(Instrument instrument) onInstrumentSelection;
+  final PickingPlayer player;
 
   const PickingLayout({
     super.key,
@@ -43,6 +44,7 @@ class PickingLayout extends StatefulWidget {
     required this.contentType,
     required this.onContentSelection,
     required this.onInstrumentSelection,
+    required this.player,
   });
 
   @override
@@ -138,7 +140,13 @@ class _PickingLayoutState extends State<PickingLayout> {
     return Stack(
       children: [
         buildTitle(size),
-        buildContent(size),
+        Positioned(
+          top: headerHeight,
+          bottom: controlsHeight,
+          left: 0,
+          width: size.width,
+          child: widget.player,
+        ),
         // buildControls(size),
         if (_isMenuOpen && mode.isKeyboardMouse()) buildOverlay(size),
         if (_isMenuOpen && mode.isKeyboardMouse()) buildSideMenu(size),
@@ -166,19 +174,6 @@ class _PickingLayoutState extends State<PickingLayout> {
       width: size.width,
       height: PickingInstrumentButton.size,
       child: PickingPlayerTitle(contentType: widget.contentType),
-    );
-  }
-
-  Widget buildContent(Size size) {
-    return Positioned(
-      top: headerHeight,
-      bottom: controlsHeight,
-      left: 0,
-      width: size.width,
-      child: PickingPlayer(
-        contentRepository: widget.contentRepository,
-        contentType: widget.contentType,
-      ),
     );
   }
 

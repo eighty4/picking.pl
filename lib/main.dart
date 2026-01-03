@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pickin_playmate/data.dart';
 import 'package:pickin_playmate/launch.dart';
 import 'package:pickin_playmate/layout.dart';
+import 'package:pickin_playmate/player.dart';
 
 void main() async {
   if (kDebugMode) {
@@ -27,13 +28,19 @@ class _PickingPlaymateState extends State<PickingPlaymate> {
       debugShowCheckedModeBanner: false,
       home: PickingLaunch(
         builder: (context, launchData) => PickingDataCore(
-          builder: (context, appData) => PickingLayout(
-            catalogIndex: appData.catalogIndex,
-            contentRepository: appData.contentRepository,
-            contentType: appData.contentType,
-            onContentSelection: appData.onContentSelection,
-            onInstrumentSelection: appData.onInstrumentSelection,
-          ),
+          builder: (context, appData) {
+            return PickingLayout(
+              catalogIndex: appData.catalogIndex,
+              contentRepository: appData.contentRepository,
+              contentType: appData.contentType,
+              onContentSelection: appData.onContentSelection,
+              onInstrumentSelection: appData.onInstrumentSelection,
+              player: PickingPlayer(
+                contentRepository: appData.contentRepository,
+                contentType: appData.contentType,
+              ),
+            );
+          },
           launchData: launchData,
         ),
       ),
