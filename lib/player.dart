@@ -117,12 +117,11 @@ class _PickingPlayerInterfaceState extends State<_PickingPlayerInterface> {
       child: Focus(
         autofocus: true,
         child: Center(
-          child: MeasureDisplay(
-            widget.measures.isNotEmpty
+          child: MeasureChart.singleMeasure(
+            instrument: widget.contentType.instrument,
+            measure: widget.measures.isNotEmpty
                 ? widget.measures[measure]
                 : Measure.fromNoteList([]),
-            // label: (measure + 1).toString(),
-            instrument: widget.contentType.instrument,
             tabContext: TabContext.forBrightness(Brightness.light),
             size: widget.size,
           ),

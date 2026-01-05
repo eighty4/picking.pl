@@ -11,7 +11,7 @@ void main() {
     await tester.binding.setSurfaceSize(Size(1200, 800));
     await tester.pumpWidget(PickingPlaymate());
     await tester.pumpAndSettle();
-    expect(find.byType(MeasureDisplay).evaluate().length, equals(1));
+    expect(find.byType(MeasureChart).evaluate().length, equals(1));
     if (!isCI) {
       await expectLater(
         find.byType(PickingPlaymate),
