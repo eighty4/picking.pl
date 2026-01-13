@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:libtab/context.dart';
 import 'package:libtab/instrument.dart';
@@ -10,17 +11,28 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// PickingDataCache syncs content info with the platform's cache storage.
 class PickingDataCache {
   // relaunching app with previous session's content
-  static const launchContentCacheKey = 'ppl.content';
+  static const _launchContentCacheKey = 'ppl.content';
   // resuming instrument session with previous session's content
-  static String instrumentContentCacheKey(Instrument instrument) {
-    return '$launchContentCacheKey.${instrument.label()}';
+  static String _instrumentContentCacheKey(Instrument instrument) {
+    return '$_launchContentCacheKey.${instrument.label()}';
+  }
+
+  static ContentType? _cacheIdToContentType(String cacheId) {
+    try {
+      return ContentType.fromCacheId(cacheId);
+    } catch (e) {
+      if (kDebugMode) {
+        print('ERROR ContentType.fromCacheId: $e');
+      }
+      return null;
+    }
   }
 
   static SharedPreferencesWithCacheOptions _cacheOptions() {
     return SharedPreferencesWithCacheOptions(
       allowList: {
-        launchContentCacheKey,
-        ...Instrument.values.map(instrumentContentCacheKey),
+        _launchContentCacheKey,
+        ...Instrument.values.map(_instrumentContentCacheKey),
       },
     );
   }
@@ -36,26 +48,28 @@ class PickingDataCache {
 
   Future<ContentType?> loadContentType({Instrument? instrument}) async {
     final cacheKey = switch (instrument) {
-      (Instrument instrument) => instrumentContentCacheKey(instrument),
-      null => launchContentCacheKey,
+      (Instrument instrument) => _instrumentContentCacheKey(instrument),
+      null => _launchContentCacheKey,
     };
-    try {
-      return switch ((await _cache).getString(cacheKey)) {
-        (String cacheId) => ContentType.fromCacheId(cacheId),
-        null => null,
-      };
-    } catch (_) {
-      return null;
+    final cache = await _cache;
+    final cacheId = cache.getString(cacheKey);
+    if (instrument != null && cacheId != null) {
+      // update launch content when changing instruments
+      cache.setString(_launchContentCacheKey, cacheId);
     }
+    return switch (cacheId) {
+      (String cacheId) => _cacheIdToContentType(cacheId),
+      null => null,
+    };
   }
 
   void saveContentType(ContentType contentType) {
     final cacheId = contentType.cacheId();
     _cache.then((cache) {
       try {
-        cache.setString(launchContentCacheKey, cacheId);
+        cache.setString(_launchContentCacheKey, cacheId);
         cache.setString(
-          instrumentContentCacheKey(contentType.instrument),
+          _instrumentContentCacheKey(contentType.instrument),
           cacheId,
         );
       } catch (_) {}
