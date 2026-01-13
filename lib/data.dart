@@ -9,13 +9,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// PickingDataCache syncs content info with the platform's cache storage.
 class PickingDataCache {
+  // relaunching app with previous session's content
+  static const launchContentCacheKey = 'ppl.content';
+  // resuming instrument session with previous session's content
+  static String instrumentContentCacheKey(Instrument instrument) {
+    return '$launchContentCacheKey.${instrument.label()}';
+  }
+
   static SharedPreferencesWithCacheOptions _cacheOptions() {
     return SharedPreferencesWithCacheOptions(
       allowList: {
-        'ppl.content',
-        ...Instrument.values.map(
-          (instrument) => 'ppl.content.${instrument.label()}',
-        ),
+        launchContentCacheKey,
+        ...Instrument.values.map(instrumentContentCacheKey),
       },
     );
   }
@@ -30,9 +35,10 @@ class PickingDataCache {
     : _cache = SharedPreferencesWithCache.create(cacheOptions: _cacheOptions());
 
   Future<ContentType?> loadContentType({Instrument? instrument}) async {
-    final cacheKey = instrument == null
-        ? 'ppl.content'
-        : 'ppl.content.${instrument.label()}';
+    final cacheKey = switch (instrument) {
+      (Instrument instrument) => instrumentContentCacheKey(instrument),
+      null => launchContentCacheKey,
+    };
     try {
       return switch ((await _cache).getString(cacheKey)) {
         (String cacheId) => ContentType.fromCacheId(cacheId),
@@ -47,9 +53,9 @@ class PickingDataCache {
     final cacheId = contentType.cacheId();
     _cache.then((cache) {
       try {
-        cache.setString('ppl.content', cacheId);
+        cache.setString(launchContentCacheKey, cacheId);
         cache.setString(
-          'ppl.content.${contentType.instrument.label()}',
+          instrumentContentCacheKey(contentType.instrument),
           cacheId,
         );
       } catch (_) {}
