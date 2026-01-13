@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:libtab/context.dart';
 import 'package:libtab/instrument.dart';
 import 'package:pickin_playmate/content/content_catalog.dart';
 import 'package:pickin_playmate/content/content_repository.dart';
@@ -63,6 +64,7 @@ class PickingAppData {
   final Function(ContentType contentType) onContentSelection;
   final Function(Instrument instrument) onInstrumentSelection;
   final bool returnUser;
+  final TabContext tabContext;
 
   PickingAppData({
     required this.catalogIndex,
@@ -71,6 +73,7 @@ class PickingAppData {
     required this.onContentSelection,
     required this.onInstrumentSelection,
     required this.returnUser,
+    required this.tabContext,
   });
 
   Instrument get instrument => contentType.instrument;
@@ -90,6 +93,7 @@ class PickingDataCore extends StatefulWidget {
 
 class _PickingDataCoreState extends State<PickingDataCore> {
   late ContentType contentType;
+  final TabContext tabContext = TabContext.forBrightness(Brightness.light);
 
   @override
   void initState() {
@@ -127,6 +131,7 @@ class _PickingDataCoreState extends State<PickingDataCore> {
         onContentSelection: onContentSelection,
         onInstrumentSelection: onInstrumentSelection,
         returnUser: widget.launchData.returnUser,
+        tabContext: tabContext,
       ),
     );
   }

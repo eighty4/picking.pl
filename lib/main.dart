@@ -38,6 +38,7 @@ class _PickingPlaymateState extends State<PickingPlaymate> {
               player: PickingPlayer(
                 contentRepository: appData.contentRepository,
                 contentType: appData.contentType,
+                tabContext: appData.tabContext,
               ),
             );
           },
