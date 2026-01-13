@@ -9,11 +9,13 @@ import 'package:pickin_playmate/content/content_type.dart';
 class PickingPlayer extends StatefulWidget {
   final ContentRepository contentRepository;
   final ContentType contentType;
+  final TabContext tabContext;
 
   const PickingPlayer({
     super.key,
     required this.contentRepository,
     required this.contentType,
+    required this.tabContext,
   });
 
   @override
@@ -53,13 +55,22 @@ class _PickingPlayerState extends State<PickingPlayer> {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           throw snapshot.error!;
+        } else if (snapshot.connectionState != ConnectionState.done ||
+            _previous == null) {
+          return MeasureChart.empty(
+            instrument: widget.contentType.instrument,
+            tabContext: widget.tabContext,
+            size: measureSize(context),
+          );
         } else {
+          final measures = snapshot.connectionState == ConnectionState.done
+              ? snapshot.data!
+              : _previous!;
           return _PickingPlayerInterface(
             contentType: widget.contentType,
-            measures: snapshot.connectionState == ConnectionState.done
-                ? snapshot.data!
-                : _previous ?? [],
+            measures: measures,
             size: measureSize(context),
+            tabContext: widget.tabContext,
           );
         }
       },
@@ -78,11 +89,13 @@ class _PickingPlayerInterface extends StatefulWidget {
   final ContentType contentType;
   final List<Measure> measures;
   final Size size;
+  final TabContext tabContext;
 
   const _PickingPlayerInterface({
     required this.contentType,
     required this.measures,
     required this.size,
+    required this.tabContext,
   });
 
   @override
