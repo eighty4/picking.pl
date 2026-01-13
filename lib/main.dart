@@ -7,8 +7,10 @@ import 'package:pickin_playmate/player.dart';
 
 void main() async {
   if (kDebugMode) {
-    WidgetsFlutterBinding.ensureInitialized();
-    await PickingDataCache.clear();
+    if (const bool.fromEnvironment('RESET', defaultValue: false)) {
+      WidgetsFlutterBinding.ensureInitialized();
+      await PickingDataCache.clear();
+    }
   }
   runApp(const PickingPlaymate());
 }
