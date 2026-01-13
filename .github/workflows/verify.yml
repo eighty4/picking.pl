@@ -53,7 +53,7 @@ jobs:
           cache-sdk: true
           version: ${{ env.flutter_version }}
       - name: build web
-        run: flutter build web
+        run: flutter build web --wasm --release
         working-directory: pp
       - run: (cd pp/build/web && zip -qr ../../../www.zip .)
       - uses: actions/upload-artifact@v4
